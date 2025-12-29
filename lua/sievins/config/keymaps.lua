@@ -18,6 +18,12 @@ normal_window_keymap('n', '<S-CR>', 'maO<esc>0<S-d>`a<cmd>delmarks a<cr>', { des
 -- Save with no action
 vim.keymap.set({ 'n', 'x' }, '<leader>fw', '<cmd>noa w<cr>', { desc = 'Save (no action)' })
 
+-- Better up/down for wrapped lines
+vim.keymap.set({ 'n', 'x' }, 'j', "v:count == 0 ? 'gj' : 'j'", { desc = 'Down', expr = true, silent = true })
+vim.keymap.set({ 'n', 'x' }, '<Down>', "v:count == 0 ? 'gj' : 'j'", { desc = 'Down', expr = true, silent = true })
+vim.keymap.set({ 'n', 'x' }, 'k', "v:count == 0 ? 'gk' : 'k'", { desc = 'Up', expr = true, silent = true })
+vim.keymap.set({ 'n', 'x' }, '<Up>', "v:count == 0 ? 'gk' : 'k'", { desc = 'Up', expr = true, silent = true })
+
 -- Move lines
 vim.keymap.set('v', '<C-down>', ":m '>+1<CR>gv=gv")
 vim.keymap.set('v', '<C-up>', ":m '<-2<CR>gv=gv")
@@ -40,6 +46,23 @@ vim.keymap.set('t', '<C-h>', '<cmd>wincmd h<cr>', { desc = 'Go to left window' }
 vim.keymap.set('t', '<C-l>', '<cmd>wincmd l<cr>', { desc = 'Go to right window' })
 vim.keymap.set('t', '<C-k>', '<cmd>wincmd k<cr>', { desc = 'Go to upper window' })
 vim.keymap.set('t', '<C-j>', '<cmd>wincmd j<cr>', { desc = 'Go to lower window' })
+
+-- Buffers (navigate by history)
+sievins.bufhistory.setup()
+
+vim.keymap.set('n', '[b', function()
+  sievins.bufhistory.back()
+end, { desc = 'Prev Buffer (history)' })
+vim.keymap.set('n', ']b', function()
+  sievins.bufhistory.forward()
+end, { desc = 'Next Buffer (history)' })
+vim.keymap.set('n', '<leader>bd', function()
+  sievins.bufdelete()
+end, { desc = 'Delete Buffer' })
+vim.keymap.set('n', '<leader>bo', function()
+  sievins.bufdelete.other()
+end, { desc = 'Delete Other Buffers' })
+vim.keymap.set('n', '<leader>bD', '<cmd>:bd<cr>', { desc = 'Delete Buffer and Window' })
 
 -- Undo history
 vim.keymap.set('n', '<leader>bu', vim.cmd.UndotreeToggle, { desc = 'Undotree' })
