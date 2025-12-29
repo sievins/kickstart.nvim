@@ -2,7 +2,9 @@ return {
   {
     'mbbill/undotree',
 
-    event = 'VeryLazy',
+    keys = {
+      { '<leader>bu', '<cmd>UndotreeToggle<cr>', desc = 'Undotree' },
+    },
 
     init = function()
       vim.g.undotree_WindowLayout = 4

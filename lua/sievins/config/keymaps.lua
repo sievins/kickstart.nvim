@@ -28,6 +28,11 @@ vim.keymap.set({ 'n', 'x' }, '<Up>', "v:count == 0 ? 'gk' : 'k'", { desc = 'Up',
 vim.keymap.set('v', '<C-down>', ":m '>+1<CR>gv=gv")
 vim.keymap.set('v', '<C-up>', ":m '<-2<CR>gv=gv")
 
+-- Windows
+vim.keymap.set('n', '<leader>-', '<C-W>s', { desc = 'Split Window Below', remap = true })
+vim.keymap.set('n', '<leader>|', '<C-W>v', { desc = 'Split Window Right', remap = true })
+vim.keymap.set('n', '<leader>wd', '<C-W>c', { desc = 'Delete Window', remap = true })
+
 -- Move focus to window using the <ctrl> arrow keys
 --  See `:help wincmd` for a list of all window commands
 vim.keymap.set('n', '<C-left>', '<C-w>h', { desc = 'Go to left window', remap = true })
@@ -64,9 +69,6 @@ vim.keymap.set('n', '<leader>bo', function()
 end, { desc = 'Delete Other Buffers' })
 vim.keymap.set('n', '<leader>bD', '<cmd>:bd<cr>', { desc = 'Delete Buffer and Window' })
 
--- Undo history
-vim.keymap.set('n', '<leader>bu', vim.cmd.UndotreeToggle, { desc = 'Undotree' })
-
 -- Paste/Delete/Change and preserve original copy
 local function paste_preserve()
   -- Delete selection into the black-hole register
@@ -94,9 +96,6 @@ vim.keymap.set({ 'n', 'x' }, 'c', '"_c', { desc = 'Change (black hole)' })
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
--- Diagnostic keymaps
-vim.keymap.set('n', '<leader>x', vim.diagnostic.setloclist, { desc = 'Open diagnostic Quickfi[x] list' })
-
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
 -- is not what someone will guess without a bit more experience.
@@ -104,3 +103,69 @@ vim.keymap.set('n', '<leader>x', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+
+-- n always search forward and N backward
+-- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
+vim.keymap.set('n', 'n', "'Nn'[v:searchforward].'zv'", { expr = true, desc = 'Next Search Result' })
+vim.keymap.set('x', 'n', "'Nn'[v:searchforward]", { expr = true, desc = 'Next Search Result' })
+vim.keymap.set('o', 'n', "'Nn'[v:searchforward]", { expr = true, desc = 'Next Search Result' })
+vim.keymap.set('n', 'N', "'nN'[v:searchforward].'zv'", { expr = true, desc = 'Prev Search Result' })
+vim.keymap.set('x', 'N', "'nN'[v:searchforward]", { expr = true, desc = 'Prev Search Result' })
+vim.keymap.set('o', 'N', "'nN'[v:searchforward]", { expr = true, desc = 'Prev Search Result' })
+
+-- Save file
+vim.keymap.set({ 'i', 'x', 'n', 's' }, '<C-s>', '<cmd>w<cr><esc>', { desc = 'Save File' })
+
+--Keyword Manuel
+vim.keymap.set('n', '<leader>K', '<cmd>norm! K<cr>', { desc = 'Keyword Manual' })
+
+-- Better indenting
+vim.keymap.set('x', '<', '<gv')
+vim.keymap.set('x', '>', '>gv')
+
+-- Lazy
+vim.keymap.set('n', '<leader>l', '<cmd>Lazy<cr>', { desc = 'Lazy' })
+
+-- New file
+vim.keymap.set('n', '<leader>fn', '<cmd>enew<cr>', { desc = 'New File' })
+
+-- Quit
+vim.keymap.set('n', '<leader>qq', '<cmd>qa<cr>', { desc = 'Quit All' })
+
+-- Location list
+vim.keymap.set('n', '<leader>xl', function()
+  local success, err = pcall(vim.fn.getloclist(0, { winid = 0 }).winid ~= 0 and vim.cmd.lclose or vim.cmd.lopen)
+  if not success and err then
+    vim.notify(err, vim.log.levels.ERROR)
+  end
+end, { desc = 'Location List' })
+
+-- Quickfix list
+vim.keymap.set('n', '<leader>xq', function()
+  local success, err = pcall(vim.fn.getqflist({ winid = 0 }).winid ~= 0 and vim.cmd.cclose or vim.cmd.copen)
+  if not success and err then
+    vim.notify(err, vim.log.levels.ERROR)
+  end
+end, { desc = 'Quickfix List' })
+
+vim.keymap.set('n', '[q', vim.cmd.cprev, { desc = 'Previous Quickfix' })
+vim.keymap.set('n', ']q', vim.cmd.cnext, { desc = 'Next Quickfix' })
+
+-- Diagnostic
+vim.keymap.set('n', '<leader>xx', vim.diagnostic.setloclist, { desc = 'Diagnostics' })
+local diagnostic_goto = function(next, severity)
+  return function()
+    vim.diagnostic.jump {
+      count = (next and 1 or -1) * vim.v.count1,
+      severity = severity and vim.diagnostic.severity[severity] or nil,
+      float = true,
+    }
+  end
+end
+vim.keymap.set('n', '<leader>cd', vim.diagnostic.open_float, { desc = 'Line Diagnostics' })
+vim.keymap.set('n', ']d', diagnostic_goto(true), { desc = 'Next Diagnostic' })
+vim.keymap.set('n', '[d', diagnostic_goto(false), { desc = 'Prev Diagnostic' })
+vim.keymap.set('n', ']e', diagnostic_goto(true, 'ERROR'), { desc = 'Next Error' })
+vim.keymap.set('n', '[e', diagnostic_goto(false, 'ERROR'), { desc = 'Prev Error' })
+vim.keymap.set('n', ']w', diagnostic_goto(true, 'WARN'), { desc = 'Next Warning' })
+vim.keymap.set('n', '[w', diagnostic_goto(false, 'WARN'), { desc = 'Prev Warning' })
