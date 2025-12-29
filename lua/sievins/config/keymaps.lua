@@ -169,3 +169,7 @@ vim.keymap.set('n', ']e', diagnostic_goto(true, 'ERROR'), { desc = 'Next Error' 
 vim.keymap.set('n', '[e', diagnostic_goto(false, 'ERROR'), { desc = 'Prev Error' })
 vim.keymap.set('n', ']w', diagnostic_goto(true, 'WARN'), { desc = 'Next Warning' })
 vim.keymap.set('n', '[w', diagnostic_goto(false, 'WARN'), { desc = 'Prev Warning' })
+
+-- Toggles
+vim.keymap.set('n', '<leader>ts', '<cmd>set spell!<cr>', { desc = 'Toggle Spelling' })
+vim.keymap.set('n', '<leader>tw', '<cmd>set wrap!<cr>', { desc = 'Toggle Wrap' })
