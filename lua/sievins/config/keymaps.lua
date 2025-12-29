@@ -16,8 +16,7 @@ normal_window_keymap('n', '<CR>', 'mao<esc>0<S-d>`a<cmd>delmarks a<cr>', { desc 
 normal_window_keymap('n', '<S-CR>', 'maO<esc>0<S-d>`a<cmd>delmarks a<cr>', { desc = 'Add new line above' })
 
 -- Save with no action
-vim.keymap.set('n', '<leader>fw', '<cmd>noa w<cr>', { desc = 'Save (no action)' })
-vim.keymap.set('v', '<leader>fw', '<cmd>noa w<cr>', { desc = 'Save (no action)' })
+vim.keymap.set({ 'n', 'x' }, '<leader>fw', '<cmd>noa w<cr>', { desc = 'Save (no action)' })
 
 -- Move lines
 vim.keymap.set('v', '<C-down>', ":m '>+1<CR>gv=gv")
@@ -44,6 +43,29 @@ vim.keymap.set('t', '<C-j>', '<cmd>wincmd j<cr>', { desc = 'Go to lower window' 
 
 -- Undo history
 vim.keymap.set('n', '<leader>bu', vim.cmd.UndotreeToggle, { desc = 'Undotree' })
+
+-- Paste/Delete/Change and preserve original copy
+local function paste_preserve()
+  -- Delete selection into the black-hole register
+  vim.cmd [[normal! "_d]]
+
+  local line = vim.api.nvim_get_current_line()
+  local col = vim.api.nvim_win_get_cursor(0)[2] -- 0-based
+
+  -- If line ends with whitespace and cursor is on that last char, paste *after* it
+  if #line > 0 and col == #line - 1 and line:sub(#line, #line):match '%s' then
+    vim.cmd 'normal! p'
+  else
+    vim.cmd 'normal! P'
+  end
+end
+vim.keymap.set({ 'n', 'x' }, '<leader>p', paste_preserve, { desc = 'Paste (preserve copy)' })
+vim.keymap.set({ 'n', 'x' }, '<leader>d', '"_d', { desc = 'Delete (black hole)' })
+vim.keymap.set('n', '<leader>dd', '"_dd', { desc = 'Delete line (black hole)' })
+vim.keymap.set('n', '<leader>D', '"_D', { desc = 'Delete to EOL (black hole)' })
+vim.keymap.set({ 'n', 'x' }, 'x', '"_x', { desc = 'Delete char (black hole)' })
+vim.keymap.set({ 'n', 'x' }, 'X', '"_X', { desc = 'Delete char back (black hole)' })
+vim.keymap.set({ 'n', 'x' }, 'c', '"_c', { desc = 'Change (black hole)' })
 
 ------------
 
