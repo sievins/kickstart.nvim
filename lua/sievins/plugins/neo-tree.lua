@@ -19,7 +19,7 @@ return {
       {
         '<leader>fe',
         function()
-          require('neo-tree.command').execute { toggle = true, dir = Kickstart.root() }
+          require('neo-tree.command').execute { toggle = true, dir = sievins.root() }
         end,
         desc = 'Explorer (Root Dir)',
       },

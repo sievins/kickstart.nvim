@@ -1,12 +1,11 @@
--- Load utilities (provides sievins.*, Kickstart.* globals)
+-- Load utilities (provides sievins.* global)
 require 'sievins.util'
-require 'kickstart.util'
 
 -- [[ Load configuration ]]
 require 'sievins.config.options'
 require 'sievins.config.keymaps'
 require 'sievins.config.autocmds'
-Kickstart.root.setup()
+sievins.root.setup()
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info

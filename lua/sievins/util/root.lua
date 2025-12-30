@@ -1,10 +1,7 @@
 -- Root detection utility adapted from LazyVim
 -- Finds project root using LSP, patterns (.git, lua), or cwd
 
----@class Kickstart
----@field root kickstart.util.root
-
----@class kickstart.util.root
+---@class sievins.root
 ---@overload fun(): string
 local M = setmetatable({}, {
   __call = function(m, ...)
@@ -12,15 +9,15 @@ local M = setmetatable({}, {
   end,
 })
 
----@class KickstartRoot
+---@class SievinsRoot
 ---@field paths string[]
----@field spec KickstartRootSpec
+---@field spec SievinsRootSpec
 
----@alias KickstartRootFn fun(buf: number): (string|string[])
+---@alias SievinsRootFn fun(buf: number): (string|string[])
 
----@alias KickstartRootSpec string|string[]|KickstartRootFn
+---@alias SievinsRootSpec string|string[]|SievinsRootFn
 
----@type KickstartRootSpec[]
+---@type SievinsRootSpec[]
 M.spec = { 'lsp', { '.git', 'lua' }, 'cwd' }
 
 M.detectors = {}
@@ -105,8 +102,8 @@ function M.realpath(path)
   return norm(path)
 end
 
----@param spec KickstartRootSpec
----@return KickstartRootFn
+---@param spec SievinsRootSpec
+---@return SievinsRootFn
 function M.resolve(spec)
   if M.detectors[spec] then
     return M.detectors[spec]
@@ -118,13 +115,13 @@ function M.resolve(spec)
   end
 end
 
----@param opts? { buf?: number, spec?: KickstartRootSpec[], all?: boolean }
+---@param opts? { buf?: number, spec?: SievinsRootSpec[], all?: boolean }
 function M.detect(opts)
   opts = opts or {}
   opts.spec = opts.spec or type(vim.g.root_spec) == 'table' and vim.g.root_spec or M.spec
   opts.buf = (opts.buf == nil or opts.buf == 0) and vim.api.nvim_get_current_buf() or opts.buf
 
-  local ret = {} ---@type KickstartRoot[]
+  local ret = {} ---@type SievinsRoot[]
   for _, spec in ipairs(opts.spec) do
     local paths = M.resolve(spec)(opts.buf)
     paths = paths or {}
@@ -168,7 +165,7 @@ function M.info()
   lines[#lines + 1] = '```lua'
   lines[#lines + 1] = 'vim.g.root_spec = ' .. vim.inspect(spec)
   lines[#lines + 1] = '```'
-  vim.notify(table.concat(lines, '\n'), vim.log.levels.INFO, { title = 'Kickstart Roots' })
+  vim.notify(table.concat(lines, '\n'), vim.log.levels.INFO, { title = 'Sievins Roots' })
   return roots[1] and roots[1].paths[1] or vim.uv.cwd()
 end
 
@@ -176,12 +173,12 @@ end
 M.cache = {}
 
 function M.setup()
-  vim.api.nvim_create_user_command('KickstartRoot', function()
-    Kickstart.root.info()
-  end, { desc = 'Kickstart roots for the current buffer' })
+  vim.api.nvim_create_user_command('SievinsRoot', function()
+    sievins.root.info()
+  end, { desc = 'Sievins roots for the current buffer' })
 
   vim.api.nvim_create_autocmd({ 'LspAttach', 'BufWritePost', 'DirChanged', 'BufEnter' }, {
-    group = vim.api.nvim_create_augroup('kickstart_root_cache', { clear = true }),
+    group = vim.api.nvim_create_augroup('sievins_root_cache', { clear = true }),
     callback = function(event)
       M.cache[event.buf] = nil
     end,
