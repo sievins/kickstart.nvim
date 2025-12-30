@@ -19,6 +19,7 @@ return {
         { '<leader>dp', group = 'profiler' },
         { '<leader>f', group = 'file/find' },
         { '<leader>g', group = 'git' },
+        { '<leader>h', group = 'harpoon' },
         { '<leader>gh', group = 'hunks' },
         { '<leader>q', group = 'quit/session' },
         { '<leader>s', group = 'search' },
@@ -49,7 +50,6 @@ return {
       },
       { '<leader>s', group = '[S]earch' },
       { '<leader>t', group = '[T]oggle' },
-      { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
     },
 
     icons = {
