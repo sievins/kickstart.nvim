@@ -47,7 +47,7 @@ return {
     local buttons = {
       type = 'group',
       val = {
-        dashboard.button('s', '   Restore Session', '<cmd>lua require("kickstart.util.session").restore()<CR>'),
+        dashboard.button('s', '   Restore Session', '<cmd>lua require("persistence").load()<CR>'),
         dashboard.button('f', '   Find File', '<cmd>Telescope find_files<CR>'),
         dashboard.button('r', '   Recent Files', '<cmd>Telescope oldfiles<CR>'),
         dashboard.button('n', '   New File', '<cmd>ene | startinsert<CR>'),
@@ -86,9 +86,6 @@ return {
         vim.cmd 'hi Cursor blend=0'
       end,
     })
-
-    -- Load session management (auto-saves on quit)
-    require 'kickstart.util.session'
   end,
 
   -- TODO: Better colours for text
