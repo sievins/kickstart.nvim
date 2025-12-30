@@ -167,25 +167,6 @@ end, { desc = 'Quickfix List' })
 vim.keymap.set('n', '[q', vim.cmd.cprev, { desc = 'Previous Quickfix' })
 vim.keymap.set('n', ']q', vim.cmd.cnext, { desc = 'Next Quickfix' })
 
--- Diagnostic
-vim.keymap.set('n', '<leader>xx', vim.diagnostic.setloclist, { desc = 'Diagnostics' })
-local diagnostic_goto = function(next, severity)
-  return function()
-    vim.diagnostic.jump {
-      count = (next and 1 or -1) * vim.v.count1,
-      severity = severity and vim.diagnostic.severity[severity] or nil,
-      float = true,
-    }
-  end
-end
-vim.keymap.set('n', '<leader>cd', vim.diagnostic.open_float, { desc = 'Line Diagnostics' })
-vim.keymap.set('n', ']d', diagnostic_goto(true), { desc = 'Next Diagnostic' })
-vim.keymap.set('n', '[d', diagnostic_goto(false), { desc = 'Prev Diagnostic' })
-vim.keymap.set('n', ']e', diagnostic_goto(true, 'ERROR'), { desc = 'Next Error' })
-vim.keymap.set('n', '[e', diagnostic_goto(false, 'ERROR'), { desc = 'Prev Error' })
-vim.keymap.set('n', ']w', diagnostic_goto(true, 'WARN'), { desc = 'Next Warning' })
-vim.keymap.set('n', '[w', diagnostic_goto(false, 'WARN'), { desc = 'Prev Warning' })
-
 -- Toggles
 vim.keymap.set('n', '<leader>ts', '<cmd>set spell!<cr>', { desc = 'Toggle Spelling' })
 vim.keymap.set('n', '<leader>tw', '<cmd>set wrap!<cr>', { desc = 'Toggle Wrap' })
