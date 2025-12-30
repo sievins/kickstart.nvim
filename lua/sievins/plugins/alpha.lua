@@ -43,17 +43,28 @@ return {
       }
     end
 
+    -- Helper to create buttons with colored icons
+    local function button(sc, icon, txt, keybind)
+      local btn = dashboard.button(sc, icon .. '   ' .. txt, keybind)
+      btn.opts.hl = {
+        { 'Function', 0, #icon }, -- Icon color
+        { 'String', #icon + 3, -1 }, -- Description color
+      }
+      btn.opts.hl_shortcut = 'Number' -- Orange-like color
+      return btn
+    end
+
     -- Minimal button set
     local buttons = {
       type = 'group',
       val = {
-        dashboard.button('s', '   Restore Session', '<cmd>lua require("persistence").load()<CR>'),
-        dashboard.button('f', '   Find File', '<cmd>Telescope find_files<CR>'),
-        dashboard.button('r', '   Recent Files', '<cmd>Telescope oldfiles<CR>'),
-        dashboard.button('n', '   New File', '<cmd>ene | startinsert<CR>'),
-        dashboard.button('g', '   Find Text', '<cmd>Telescope live_grep<CR>'),
-        dashboard.button('l', '  󰒲 Lazy', '<cmd>Lazy<CR>'),
-        dashboard.button('q', '   Quit', '<cmd>qa<CR>'),
+        button('s', '', 'Restore Session', '<cmd>lua require("persistence").load()<CR>'),
+        button('f', '', 'Find File', '<cmd>Telescope find_files<CR>'),
+        button('r', '', 'Recent Files', '<cmd>Telescope oldfiles<CR>'),
+        button('n', '', 'New File', '<cmd>ene | startinsert<CR>'),
+        button('g', '', 'Find Text', '<cmd>Telescope live_grep<CR>'),
+        button('l', '󰒲', 'Lazy', '<cmd>Lazy<CR>'),
+        button('q', '', 'Quit', '<cmd>qa<CR>'),
       },
       opts = { spacing = 1 },
     }
@@ -87,6 +98,4 @@ return {
       end,
     })
   end,
-
-  -- TODO: Better colours for text
 }
