@@ -90,4 +90,6 @@ return {
     -- Load session management (auto-saves on quit)
     require 'kickstart.util.session'
   end,
+
+  -- TODO: Better colours for text
 }

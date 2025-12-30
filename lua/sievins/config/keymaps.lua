@@ -129,6 +129,22 @@ vim.keymap.set('n', '<leader>l', '<cmd>Lazy<cr>', { desc = 'Lazy' })
 -- New file
 vim.keymap.set('n', '<leader>fn', '<cmd>enew<cr>', { desc = 'New File' })
 
+-- Delete file
+vim.keymap.set('n', '<leader>fd', function()
+  local path = vim.api.nvim_buf_get_name(0)
+  if path == '' then
+    vim.notify('No file to delete', vim.log.levels.WARN)
+    return
+  end
+  vim.ui.select({ 'Yes', 'No' }, { prompt = 'Delete ' .. path .. '?' }, function(choice)
+    if choice == 'Yes' then
+      os.remove(path)
+      sievins.bufdelete()
+      vim.notify('Deleted ' .. path)
+    end
+  end)
+end, { desc = 'Delete File' })
+
 -- Quit
 vim.keymap.set('n', '<leader>qq', '<cmd>qa<cr>', { desc = 'Quit All' })
 
