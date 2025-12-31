@@ -191,7 +191,7 @@ return {
       if isActiveLine then
         return {
           function()
-            return isHarpoonActive() and isFileHarpooned(index) and isFileCurrentBuffer(index) and getFile(index) or ''
+            return isHarpoonActive() and isFileHarpooned(index) and isFileCurrentBuffer(index) and index .. '. ' .. getFile(index) or ''
           end,
           'filename',
           color = { fg = '#a1cd5e' },
@@ -199,7 +199,7 @@ return {
       else
         return {
           function()
-            return isHarpoonActive() and isFileHarpooned(index) and not isFileCurrentBuffer(index) and getFile(index) or ''
+            return isHarpoonActive() and isFileHarpooned(index) and not isFileCurrentBuffer(index) and index .. '. ' .. getFile(index) or ''
           end,
           'filename',
         }
