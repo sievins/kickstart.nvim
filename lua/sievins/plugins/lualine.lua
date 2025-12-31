@@ -85,6 +85,9 @@ return {
         },
         lualine_x = {
           {
+            require('recorder').recordingStatus,
+          },
+          {
             'diff',
             symbols = {
               added = ' ',
