@@ -161,13 +161,28 @@ return {
       return Harpoonline.format() ~= ''
     end
 
+    ---@param str string
+    ---@param max_len number
+    ---@return string
+    local function truncate(str, max_len)
+      if #str <= max_len then
+        return str
+      end
+      return string.sub(str, 1, max_len - 1) .. '…'
+    end
+
     ---@param index number
+    ---@param max_len number|nil
     ---@return string | nil
-    local function getFile(index)
+    local function getFile(index, max_len)
       local files = split(Harpoonline.format(), ' ')
       local file = files[index]
       -- Remove leading '*' character if present
-      return file and string.sub(file, 1, 1) == '*' and string.sub(file, 2) or file
+      local filename = file and string.sub(file, 1, 1) == '*' and string.sub(file, 2) or file
+      if filename and max_len then
+        return truncate(filename, max_len)
+      end
+      return filename
     end
 
     ---@param index number
@@ -175,6 +190,12 @@ return {
     local isFileHarpooned = function(index)
       local files = split(Harpoonline.format(), ' ')
       return files[index] ~= nil
+    end
+
+    ---@return number
+    local function getHarpoonCount()
+      local files = split(Harpoonline.format(), ' ')
+      return #files
     end
 
     ---@param index number
@@ -185,13 +206,17 @@ return {
       return file and string.sub(file, 1, 1) == '*'
     end
 
+    local max_filename_len = 6
+    local truncate_threshold = 5
+
     ---@param index number
     ---@param isActiveLine boolean
     local function createLualine(index, isActiveLine)
       if isActiveLine then
         return {
           function()
-            return isHarpoonActive() and isFileHarpooned(index) and isFileCurrentBuffer(index) and index .. '. ' .. getFile(index) or ''
+            local max_len = getHarpoonCount() > truncate_threshold and max_filename_len or nil
+            return isHarpoonActive() and isFileHarpooned(index) and isFileCurrentBuffer(index) and index .. '. ' .. getFile(index, max_len) or ''
           end,
           'filename',
           color = { fg = '#a1cd5e' },
@@ -199,7 +224,8 @@ return {
       else
         return {
           function()
-            return isHarpoonActive() and isFileHarpooned(index) and not isFileCurrentBuffer(index) and index .. '. ' .. getFile(index) or ''
+            local max_len = getHarpoonCount() > truncate_threshold and max_filename_len or nil
+            return isHarpoonActive() and isFileHarpooned(index) and not isFileCurrentBuffer(index) and index .. '. ' .. getFile(index, max_len) or ''
           end,
           'filename',
         }
