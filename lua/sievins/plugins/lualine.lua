@@ -23,9 +23,45 @@ return {
 
     vim.o.laststatus = vim.g.lualine_laststatus
 
+    -- Single grey background for all sections (uses bg_highlight from theme)
+    local colors = require('tokyonight.colors').setup()
+    local grey_bg = colors.bg_highlight
+    local grey_theme = {
+      normal = {
+        a = { bg = grey_bg, fg = colors.blue },
+        b = { bg = grey_bg, fg = colors.fg },
+        c = { bg = grey_bg, fg = colors.fg },
+      },
+      insert = {
+        a = { bg = grey_bg, fg = colors.green },
+        b = { bg = grey_bg, fg = colors.fg },
+        c = { bg = grey_bg, fg = colors.fg },
+      },
+      visual = {
+        a = { bg = grey_bg, fg = colors.magenta },
+        b = { bg = grey_bg, fg = colors.fg },
+        c = { bg = grey_bg, fg = colors.fg },
+      },
+      replace = {
+        a = { bg = grey_bg, fg = colors.red },
+        b = { bg = grey_bg, fg = colors.fg },
+        c = { bg = grey_bg, fg = colors.fg },
+      },
+      command = {
+        a = { bg = grey_bg, fg = colors.yellow },
+        b = { bg = grey_bg, fg = colors.fg },
+        c = { bg = grey_bg, fg = colors.fg },
+      },
+      inactive = {
+        a = { bg = grey_bg, fg = colors.dark5 },
+        b = { bg = grey_bg, fg = colors.dark5 },
+        c = { bg = grey_bg, fg = colors.dark5 },
+      },
+    }
+
     local opts = {
       options = {
-        theme = 'auto',
+        theme = grey_theme,
         section_separators = '',
         component_separators = '',
         globalstatus = vim.o.laststatus == 3,
