@@ -72,7 +72,15 @@ return {
         lualine_b = { 'branch' },
 
         lualine_c = {
-          'filename',
+          {
+            'filename',
+            symbols = {
+              modified = '',
+              readonly = '',
+              unnamed = '[No Name]',
+              newfile = '',
+            },
+          },
           {
             'diagnostics',
             symbols = {
