@@ -110,13 +110,53 @@ return {
 
     -- Update lualine config if adding more keymaps
 
-    -- Toggle previous & next buffers stored within Harpoon list
+    -- Toggle previous & next buffers stored within Harpoon list (wraps around)
     vim.keymap.set('n', '<S-left>', function()
-      harpoon:list():prev()
-    end, { desc = 'Go to previous harpoon file' })
+      local list = harpoon:list()
+      local items = list.items
+      local length = #items
+      if length == 0 then
+        return
+      end
+
+      local current = vim.fn.expand '%:.'
+      local idx = nil
+      for i, item in ipairs(items) do
+        if item.value == current then
+          idx = i
+          break
+        end
+      end
+
+      if idx == nil or idx <= 1 then
+        list:select(length)
+      else
+        list:select(idx - 1)
+      end
+    end, { desc = 'Go to previous harpoon file (wraps)' })
 
     vim.keymap.set('n', '<S-right>', function()
-      harpoon:list():next()
-    end, { desc = 'Go to next harpoon file' })
+      local list = harpoon:list()
+      local items = list.items
+      local length = #items
+      if length == 0 then
+        return
+      end
+
+      local current = vim.fn.expand '%:.'
+      local idx = nil
+      for i, item in ipairs(items) do
+        if item.value == current then
+          idx = i
+          break
+        end
+      end
+
+      if idx == nil or idx >= length then
+        list:select(1)
+      else
+        list:select(idx + 1)
+      end
+    end, { desc = 'Go to next harpoon file (wraps)' })
   end,
 }
