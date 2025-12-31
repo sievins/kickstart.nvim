@@ -89,7 +89,9 @@ return {
         position = 'right',
         mappings = {
           ['<space>'] = 'none',
+          ---@param state neotree.sources.filesystem.State
           ['H'] = function(state)
+            ---@diagnostic disable-next-line: undefined-field
             local node = state.tree:get_node()
             local path = node:get_id()
             local name = vim.fn.fnamemodify(path, ':t')
@@ -98,6 +100,7 @@ return {
             require('neo-tree.sources.filesystem.commands').toggle_hidden(state)
 
             -- Don't navigate back if we just hid hidden files and the current file is hidden
+            ---@diagnostic disable-next-line: undefined-field
             local now_hiding = not state.filtered_items.show_hidden
             if not (now_hiding and is_hidden) then
               require('neo-tree.sources.filesystem').navigate(state, state.path, path)
