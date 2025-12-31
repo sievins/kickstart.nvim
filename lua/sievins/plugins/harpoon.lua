@@ -51,6 +51,8 @@ return {
 
     vim.keymap.set('n', '<leader>hc', function()
       harpoon:list():clear()
+      -- Notify Harpoonline that the list changed so it rebuilds its cache
+      vim.api.nvim_exec_autocmds('User', { pattern = 'HarpoonSwitchedList', modeline = false })
     end, { desc = 'Clear all files in the harpoon list' })
 
     -- Most of these shift keys are reserved and I've found that remembering
