@@ -23,6 +23,13 @@ return {
         },
         view = 'mini',
       },
+      -- Do not display message when toggling hidden files with "H" in Neo-tree
+      {
+        filter = {
+          find = 'Toggling hidden files',
+        },
+        opts = { skip = true },
+      },
     },
     presets = {
       bottom_search = true,

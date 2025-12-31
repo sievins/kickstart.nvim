@@ -89,6 +89,20 @@ return {
         position = 'right',
         mappings = {
           ['<space>'] = 'none',
+          ['H'] = function(state)
+            local node = state.tree:get_node()
+            local path = node:get_id()
+            local name = vim.fn.fnamemodify(path, ':t')
+            local is_hidden = name:sub(1, 1) == '.'
+
+            require('neo-tree.sources.filesystem.commands').toggle_hidden(state)
+
+            -- Don't navigate back if we just hid hidden files and the current file is hidden
+            local now_hiding = not state.filtered_items.show_hidden
+            if not (now_hiding and is_hidden) then
+              require('neo-tree.sources.filesystem').navigate(state, state.path, path)
+            end
+          end,
           ['<C-d>'] = { 'scroll_preview', config = { direction = -10 } },
           ['<C-u>'] = { 'scroll_preview', config = { direction = 10 } },
           ['w'] = 'focus_preview',
@@ -107,6 +121,15 @@ return {
           --   end,
           --   desc = 'Open with System Application',
           -- },
+        },
+      },
+      event_handlers = {
+        {
+          event = 'neo_tree_buffer_enter',
+          handler = function()
+            vim.opt_local.number = true
+            vim.opt_local.relativenumber = true
+          end,
         },
       },
     },
