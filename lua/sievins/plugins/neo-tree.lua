@@ -118,12 +118,16 @@ return {
             local path = node:get_id()
             vim.fn.setreg('+', path, 'c')
           end,
-          -- ['O'] = {
-          --   function(state)
-          --     require('lazy.util').open(state.tree:get_node().path, { system = true })
-          --   end,
-          --   desc = 'Open with System Application',
-          -- },
+          ['O'] = {
+            ---@param state neotree.sources.filesystem.State
+            ---@diagnostic disable-next-line: assign-type-mismatch
+            function(state)
+              ---@diagnostic disable-next-line: undefined-field
+              local path = state.tree:get_node().path
+              vim.ui.open(path)
+            end,
+            desc = 'Open with System Application',
+          },
         },
       },
       event_handlers = {
