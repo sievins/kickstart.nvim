@@ -53,7 +53,36 @@ return {
       harpoon:list():clear()
       -- Notify Harpoonline that the list changed so it rebuilds its cache
       vim.api.nvim_exec_autocmds('User', { pattern = 'HarpoonSwitchedList', modeline = false })
-    end, { desc = 'Clear all files in the harpoon list' })
+    end, { desc = 'Clear all files from harpoon list' })
+
+    vim.keymap.set('n', '<leader>hd', function()
+      local list = harpoon:list()
+      local current = vim.fn.expand '%:.'
+      for i, item in ipairs(list.items) do
+        if item.value == current then
+          list:remove_at(i)
+          vim.api.nvim_exec_autocmds('User', { pattern = 'HarpoonSwitchedList', modeline = false })
+          break
+        end
+      end
+    end, { desc = 'Clear current file from harpoon list' })
+
+    vim.keymap.set('n', '<leader>ho', function()
+      local list = harpoon:list()
+      local current = vim.fn.expand '%:.'
+      local found = false
+      for _, item in ipairs(list.items) do
+        if item.value == current then
+          found = true
+          break
+        end
+      end
+      list:clear()
+      if found then
+        list:add()
+      end
+      vim.api.nvim_exec_autocmds('User', { pattern = 'HarpoonSwitchedList', modeline = false })
+    end, { desc = 'Clear other files from harpoon list' })
 
     -- Most of these shift keys are reserved and I've found that remembering
     -- which file is under which key hard to remember.
