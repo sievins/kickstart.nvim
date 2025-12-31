@@ -125,3 +125,13 @@ vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
     vim.fn.mkdir(vim.fn.fnamemodify(file, ':p:h'), 'p')
   end,
 })
+
+-- Change LSP reference highlights to underline instead of background color
+vim.api.nvim_create_autocmd('ColorScheme', {
+  group = augroup 'lsp_reference_highlights',
+  callback = function()
+    vim.api.nvim_set_hl(0, 'LspReferenceText', { underline = true, bg = 'NONE' })
+    vim.api.nvim_set_hl(0, 'LspReferenceRead', { underline = true, bg = 'NONE' })
+    vim.api.nvim_set_hl(0, 'LspReferenceWrite', { underline = true, bg = 'NONE' })
+  end,
+})
