@@ -67,6 +67,16 @@ function M.back()
   navigating = false
 end
 
+--- Get the previous buffer in history (without navigating)
+---@return integer|nil
+function M.get_previous()
+  cleanup_history()
+  if #history <= 1 then
+    return nil
+  end
+  return history[#history - 1]
+end
+
 --- Navigate forward in history
 function M.forward()
   cleanup_history()

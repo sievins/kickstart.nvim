@@ -29,8 +29,29 @@ vim.keymap.set('v', '<C-down>', ":m '>+1<CR>gv=gv")
 vim.keymap.set('v', '<C-up>', ":m '<-2<CR>gv=gv")
 
 -- Windows
-vim.keymap.set('n', '<leader>-', '<C-W>s', { desc = 'Split Window Below', remap = true })
-vim.keymap.set('n', '<leader>|', '<C-W>v', { desc = 'Split Window Right', remap = true })
+-- Split and move current buffer to new split, show previous buffer in original window
+local function split_with_prev_buffer(split_cmd)
+  local current_buf = vim.api.nvim_get_current_buf()
+  local prev_buf = sievins.bufhistory.get_previous()
+
+  -- Split creates new window and moves cursor there
+  vim.cmd(split_cmd)
+
+  -- Go back to original window
+  vim.cmd 'wincmd p'
+
+  -- Set previous buffer in original window (if available)
+  if prev_buf and prev_buf ~= current_buf then
+    vim.api.nvim_set_current_buf(prev_buf)
+  end
+end
+
+vim.keymap.set('n', '<leader>-', function()
+  split_with_prev_buffer 'split'
+end, { desc = 'Split Window Below' })
+vim.keymap.set('n', '<leader>|', function()
+  split_with_prev_buffer 'vsplit'
+end, { desc = 'Split Window Right' })
 vim.keymap.set('n', '<leader>wd', '<C-W>c', { desc = 'Delete Window', remap = true })
 
 -- Move focus to window using the <ctrl> arrow keys
