@@ -89,7 +89,11 @@ do
       })
     else
       vim.api.nvim_clear_autocmds { group = augroup }
-      vim.wo.statuscolumn = ''
+      vim.o.statuscolumn = ''
+      -- Reset statuscolumn for all buffers (Neovim stores per-buffer window options)
+      local current_buf = vim.api.nvim_get_current_buf()
+      vim.cmd 'silent! noautocmd bufdo setlocal statuscolumn='
+      vim.api.nvim_set_current_buf(current_buf)
     end
   end, { desc = 'Center window toggle' })
 end
