@@ -616,6 +616,9 @@ require('lazy').setup({
           colors.fg_gutter = fg_gutter
           colors.fg_sidebar = fg_dark
         end,
+        on_highlights = function(highlights)
+          highlights.ColorColumn = { bg = bg_highlight }
+        end,
       }
 
       vim.cmd 'colorscheme tokyonight'
