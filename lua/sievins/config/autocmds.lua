@@ -135,3 +135,42 @@ vim.api.nvim_create_autocmd('ColorScheme', {
     vim.api.nvim_set_hl(0, 'LspReferenceWrite', { underline = true, bg = 'NONE' })
   end,
 })
+
+-- Delete stale buffers
+local function prune_buffers(opts)
+  opts = opts or {}
+  local max_listed = opts.max_listed or 40
+
+  local bufs = vim.fn.getbufinfo { buflisted = 1 }
+  if #bufs <= max_listed then
+    return
+  end
+
+  -- Oldest first by "last used" time (fallback to 0)
+  table.sort(bufs, function(a, b)
+    return (a.lastused or 0) < (b.lastused or 0)
+  end)
+
+  local to_delete = #bufs - max_listed
+  for _, b in ipairs(bufs) do
+    if to_delete <= 0 then
+      break
+    end
+
+    -- Skip anything visible, modified, or not a normal file
+    local visible = (b.windows and #b.windows > 0)
+    local modified = (b.changed == 1)
+    local name = b.name or ''
+
+    if not visible and not modified and name ~= '' and vim.bo[b.bufnr].buftype == '' then
+      pcall(vim.api.nvim_buf_delete, b.bufnr, { force = false })
+      to_delete = to_delete - 1
+    end
+  end
+end
+
+vim.api.nvim_create_autocmd({ 'BufEnter' }, {
+  callback = function()
+    prune_buffers()
+  end,
+})
