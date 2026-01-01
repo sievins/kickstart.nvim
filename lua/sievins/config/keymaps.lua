@@ -52,6 +52,48 @@ vim.keymap.set('t', '<C-l>', '<cmd>wincmd l<cr>', { desc = 'Go to right window' 
 vim.keymap.set('t', '<C-k>', '<cmd>wincmd k<cr>', { desc = 'Go to upper window' })
 vim.keymap.set('t', '<C-j>', '<cmd>wincmd j<cr>', { desc = 'Go to lower window' })
 
+-- Center window toggle
+do
+  local enabled = false
+  local augroup = vim.api.nvim_create_augroup('CenterWindow', { clear = true })
+  local text_width = 100
+
+  vim.keymap.set('n', '<leader>wc', function()
+    enabled = not enabled
+
+    if enabled then
+      local function update_statuscolumn()
+        local winwidth = vim.api.nvim_win_get_width(0)
+        local full_screen = vim.o.columns
+        local padding = math.min(40, math.max(0, math.floor((winwidth - text_width) / 2)))
+        if winwidth > (full_screen / 2) then
+          vim.wo.statuscolumn = string.rep(' ', padding) .. '%s%l '
+        else
+          vim.wo.statuscolumn = ''
+        end
+      end
+
+      update_statuscolumn()
+
+      vim.api.nvim_create_autocmd({
+        'BufEnter',
+        'BufWinEnter',
+        'BufWinLeave',
+        'WinEnter',
+        'WinLeave',
+        'WinResized',
+        'VimResized',
+      }, {
+        group = augroup,
+        callback = update_statuscolumn,
+      })
+    else
+      vim.api.nvim_clear_autocmds { group = augroup }
+      vim.wo.statuscolumn = ''
+    end
+  end, { desc = 'Center window toggle' })
+end
+
 -- Buffers (navigate by history)
 sievins.bufhistory.setup()
 
