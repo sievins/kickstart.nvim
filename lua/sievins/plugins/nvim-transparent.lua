@@ -2,12 +2,17 @@ return {
   {
     'xiyaowong/nvim-transparent',
 
-    event = 'VeryLazy',
+    lazy = false, -- Load before alpha so dashboard is transparent
 
     opts = {
       extra_groups = {
         'NormalFloat', -- plugins which have float panel such as Lazy, Mason, LspInfo
         'NvimTreeNormal', -- NvimTree
+        -- Alpha dashboard
+        'AlphaHeader',
+        'AlphaButtons',
+        'AlphaFooter',
+        'AlphaShortcut',
       },
     },
 
@@ -19,6 +24,7 @@ return {
       if vim.g.transparent_enabled then
         transparent.clear_prefix 'NeoTree'
         transparent.clear_prefix 'lualine'
+        transparent.clear_prefix 'Alpha'
       end
     end,
 
@@ -33,6 +39,7 @@ return {
             -- Going transparent - clear the prefixes
             transparent.clear_prefix 'NeoTree'
             transparent.clear_prefix 'lualine'
+            transparent.clear_prefix 'Alpha'
           else
             -- Going opaque - restore NeoTree highlights
             vim.api.nvim_set_hl(0, 'NeoTreeNormal', { link = 'Normal' })
