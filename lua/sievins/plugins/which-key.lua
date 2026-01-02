@@ -28,6 +28,12 @@ return {
         { '[', group = 'prev' },
         { ']', group = 'next' },
         { 'g', group = 'goto' },
+        -- Hide default Neovim 0.11+ LSP keymaps so gr doesn't appear as a group
+        { 'grr', hidden = true },
+        { 'grn', hidden = true },
+        { 'gri', hidden = true },
+        { 'gra', hidden = true },
+        { 'grt', hidden = true },
         { 'gs', group = 'surround' },
         { 'z', group = 'fold' },
         {
