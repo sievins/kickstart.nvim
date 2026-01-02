@@ -23,10 +23,24 @@ return {
     local backdrop_bufnr = nil
     local backdrop_winnr = nil
 
-    -- Create backdrop when lazygit opens
+    -- Create backdrop when lazygit opens (only when transparency is off)
     vim.api.nvim_create_autocmd('TermOpen', {
       pattern = '*lazygit*',
       callback = function()
+        -- Move lazygit window up a bit
+        local lazygit_win = vim.api.nvim_get_current_win()
+        local config = vim.api.nvim_win_get_config(lazygit_win)
+        if config.relative ~= '' then
+          config.row = config.row - 1
+          config.zindex = 50
+          vim.api.nvim_win_set_config(lazygit_win, config)
+        end
+
+        -- Skip backdrop when transparency is enabled
+        if vim.g.transparent_enabled then
+          return
+        end
+
         -- Create backdrop buffer
         backdrop_bufnr = vim.api.nvim_create_buf(false, true)
         vim.bo[backdrop_bufnr].bufhidden = 'wipe'
@@ -47,15 +61,6 @@ return {
         vim.api.nvim_set_hl(0, 'LazyGitBackdrop', { bg = '#000000', default = true })
         vim.wo[backdrop_winnr].winhighlight = 'Normal:LazyGitBackdrop'
         vim.wo[backdrop_winnr].winblend = 50
-
-        -- Move lazygit window up and ensure it's above backdrop
-        local lazygit_win = vim.api.nvim_get_current_win()
-        local config = vim.api.nvim_win_get_config(lazygit_win)
-        if config.relative ~= '' then
-          config.row = config.row - 1
-          config.zindex = 50
-          vim.api.nvim_win_set_config(lazygit_win, config)
-        end
       end,
     })
 
