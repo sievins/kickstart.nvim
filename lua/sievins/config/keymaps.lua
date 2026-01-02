@@ -73,49 +73,112 @@ vim.keymap.set('t', '<C-l>', '<cmd>wincmd l<cr>', { desc = 'Go to right window' 
 vim.keymap.set('t', '<C-k>', '<cmd>wincmd k<cr>', { desc = 'Go to upper window' })
 vim.keymap.set('t', '<C-j>', '<cmd>wincmd j<cr>', { desc = 'Go to lower window' })
 
--- Center window toggle
+-- Center window toggle (floating window zen mode)
 do
-  local enabled = false
-  local augroup = vim.api.nvim_create_augroup('CenterWindow', { clear = true })
-  local text_width = 100
+  local text_width = 120
+  local zen_win = nil
+  local backdrop_win = nil
+  local backdrop_buf = nil
+  local parent_win = nil
+  local augroup = vim.api.nvim_create_augroup('ZenMode', { clear = true })
+
+  local function close_zen()
+    if backdrop_win and vim.api.nvim_win_is_valid(backdrop_win) then
+      vim.api.nvim_win_close(backdrop_win, true)
+    end
+    if zen_win and vim.api.nvim_win_is_valid(zen_win) then
+      vim.api.nvim_win_close(zen_win, true)
+    end
+    if backdrop_buf and vim.api.nvim_buf_is_valid(backdrop_buf) then
+      vim.api.nvim_buf_delete(backdrop_buf, { force = true })
+    end
+    zen_win = nil
+    backdrop_win = nil
+    backdrop_buf = nil
+    parent_win = nil
+    vim.api.nvim_clear_autocmds { group = augroup }
+  end
 
   vim.keymap.set('n', '<leader>wc', function()
-    enabled = not enabled
-
-    if enabled then
-      local function update_statuscolumn()
-        local winwidth = vim.api.nvim_win_get_width(0)
-        local full_screen = vim.o.columns
-        local padding = math.min(40, math.max(0, math.floor((winwidth - text_width) / 2)))
-        if winwidth > (full_screen / 2) then
-          vim.wo.statuscolumn = string.rep(' ', padding) .. '%s%l '
-        else
-          vim.wo.statuscolumn = ''
-        end
-      end
-
-      update_statuscolumn()
-
-      vim.api.nvim_create_autocmd({
-        'BufEnter',
-        'BufWinEnter',
-        'BufWinLeave',
-        'WinEnter',
-        'WinLeave',
-        'WinResized',
-        'VimResized',
-      }, {
-        group = augroup,
-        callback = update_statuscolumn,
-      })
-    else
-      vim.api.nvim_clear_autocmds { group = augroup }
-      vim.o.statuscolumn = ''
-      -- Reset statuscolumn for all buffers (Neovim stores per-buffer window options)
-      local current_buf = vim.api.nvim_get_current_buf()
-      vim.cmd 'silent! noautocmd bufdo setlocal statuscolumn='
-      vim.api.nvim_set_current_buf(current_buf)
+    -- If already open, close it
+    if zen_win and vim.api.nvim_win_is_valid(zen_win) then
+      close_zen()
+      return
     end
+
+    parent_win = vim.api.nvim_get_current_win()
+    local buf = vim.api.nvim_get_current_buf()
+    local cursor = vim.api.nvim_win_get_cursor(parent_win)
+
+    -- Calculate height excluding statusline and cmdline
+    local statusline_height = vim.o.laststatus > 0 and 1 or 0
+    local excluded_height = statusline_height + vim.o.cmdheight
+    local content_height = vim.o.lines - excluded_height
+
+    -- Create backdrop buffer and window
+    backdrop_buf = vim.api.nvim_create_buf(false, true)
+    vim.bo[backdrop_buf].buftype = 'nofile'
+    backdrop_win = vim.api.nvim_open_win(backdrop_buf, false, {
+      relative = 'editor',
+      width = vim.o.columns,
+      height = content_height,
+      row = 0,
+      col = 0,
+      style = 'minimal',
+      focusable = false,
+      zindex = 30,
+    })
+    vim.wo[backdrop_win].winhighlight = 'Normal:Normal'
+
+    -- Calculate centered position for zen window
+    local width = math.min(text_width, vim.o.columns - 4)
+    local height = content_height
+    local row = 0
+    local col = math.floor((vim.o.columns - width) / 2)
+
+    -- Create zen floating window
+    zen_win = vim.api.nvim_open_win(buf, true, {
+      relative = 'editor',
+      width = width,
+      height = height,
+      row = row,
+      col = col,
+      style = 'minimal',
+      border = 'none',
+      zindex = 40,
+    })
+
+    -- Restore cursor and center view
+    vim.api.nvim_win_set_cursor(zen_win, cursor)
+    vim.cmd 'normal! zz'
+
+    -- Window options
+    vim.wo[zen_win].winhighlight = 'NormalFloat:Normal'
+    vim.wo[zen_win].number = true
+    vim.wo[zen_win].relativenumber = true
+    vim.wo[zen_win].signcolumn = 'yes'
+    vim.wo[zen_win].cursorline = true
+
+    -- Sync cursor back to parent window
+    vim.api.nvim_create_autocmd('CursorMoved', {
+      group = augroup,
+      callback = function()
+        if zen_win and vim.api.nvim_win_is_valid(zen_win) and vim.api.nvim_win_is_valid(parent_win) then
+          vim.api.nvim_win_set_cursor(parent_win, vim.api.nvim_win_get_cursor(zen_win))
+        end
+      end,
+    })
+
+    -- Close zen when entering another non-floating window
+    vim.api.nvim_create_autocmd('WinEnter', {
+      group = augroup,
+      callback = function()
+        local w = vim.api.nvim_get_current_win()
+        if w ~= zen_win and w ~= backdrop_win and vim.api.nvim_win_get_config(w).relative == '' then
+          close_zen()
+        end
+      end,
+    })
   end, { desc = 'Center window toggle' })
 end
 
