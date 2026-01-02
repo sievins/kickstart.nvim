@@ -395,6 +395,16 @@ require('lazy').setup({
             },
           },
         },
+        vtsls = {
+          settings = {
+            typescript = {
+              format = { enable = false },
+            },
+            javascript = {
+              format = { enable = false },
+            },
+          },
+        },
       }
 
       -- Ensure the servers and tools above are installed
@@ -465,11 +475,11 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
-        --
-        -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        -- Use prettierd (daemon) for faster formatting, fall back to prettier
+        typescript = { 'prettierd', 'prettier', stop_after_first = true },
+        typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
+        javascript = { 'prettierd', 'prettier', stop_after_first = true },
+        javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },
       },
     },
   },

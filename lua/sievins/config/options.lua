@@ -59,7 +59,7 @@ vim.o.winminwidth = 5 -- Minimum window width
 vim.o.wrap = false -- Disable line wrap
 vim.opt.diffopt:append { 'algorithm:histogram', 'indent-heuristic' } -- Diffs line up better
 vim.opt.fillchars = { foldopen = '', foldclose = '', fold = ' ', foldsep = ' ', diff = '╱', eob = ' ' }
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' } -- Sets how neovim will display certain whitespace characters in the editor
+vim.opt.listchars = { tab = '» ', nbsp = '␣' } -- Sets how neovim will display certain whitespace characters in the editor
 vim.opt.sessionoptions = { 'buffers', 'curdir', 'folds', 'tabpages', 'winsize', 'help', 'globals', 'skiprtp', 'folds' } -- Restoring sessions
 vim.opt.shortmess:append { W = true, I = true, c = true, C = true } -- Suppress some messages at bottom
 vim.schedule(function() -- Schedule the setting after `UiEnter` because it can increase startup-time
