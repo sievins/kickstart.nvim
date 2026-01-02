@@ -136,41 +136,28 @@ vim.api.nvim_create_autocmd('ColorScheme', {
   end,
 })
 
--- Delete stale buffers
-local function prune_buffers(opts)
+-- Notify when buffer count exceeds threshold
+local stale_buffers_notified = false
+
+local function check_buffer_count(opts)
   opts = opts or {}
   local max_listed = opts.max_listed or 40
 
   local bufs = vim.fn.getbufinfo { buflisted = 1 }
+
   if #bufs <= max_listed then
+    stale_buffers_notified = false
     return
   end
 
-  -- Oldest first by "last used" time (fallback to 0)
-  table.sort(bufs, function(a, b)
-    return (a.lastused or 0) < (b.lastused or 0)
-  end)
-
-  local to_delete = #bufs - max_listed
-  for _, b in ipairs(bufs) do
-    if to_delete <= 0 then
-      break
-    end
-
-    -- Skip anything visible, modified, or not a normal file
-    local visible = (b.windows and #b.windows > 0)
-    local modified = (b.changed == 1)
-    local name = b.name or ''
-
-    if not visible and not modified and name ~= '' and vim.bo[b.bufnr].buftype == '' then
-      pcall(vim.api.nvim_buf_delete, b.bufnr, { force = false })
-      to_delete = to_delete - 1
-    end
+  if not stale_buffers_notified then
+    stale_buffers_notified = true
+    vim.notify(string.format('Buffer count (%d) exceeds limit (%d)', #bufs, max_listed), vim.log.levels.WARN)
   end
 end
 
 vim.api.nvim_create_autocmd({ 'BufEnter' }, {
   callback = function()
-    prune_buffers()
+    vim.schedule(check_buffer_count)
   end,
 })
