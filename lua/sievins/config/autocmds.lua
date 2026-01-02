@@ -130,9 +130,10 @@ vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
 vim.api.nvim_create_autocmd('ColorScheme', {
   group = augroup 'lsp_reference_highlights',
   callback = function()
-    vim.api.nvim_set_hl(0, 'LspReferenceText', { underline = true, bg = 'NONE' })
-    vim.api.nvim_set_hl(0, 'LspReferenceRead', { underline = true, bg = 'NONE' })
-    vim.api.nvim_set_hl(0, 'LspReferenceWrite', { underline = true, bg = 'NONE' })
+    -- vim-illuminate highlight groups
+    vim.api.nvim_set_hl(0, 'IlluminatedWordText', { underline = true, bg = 'NONE' })
+    vim.api.nvim_set_hl(0, 'IlluminatedWordRead', { underline = true, bg = 'NONE' })
+    vim.api.nvim_set_hl(0, 'IlluminatedWordWrite', { underline = true, bg = 'NONE' })
   end,
 })
 
