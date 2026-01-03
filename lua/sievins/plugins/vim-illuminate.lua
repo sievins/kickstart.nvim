@@ -32,6 +32,7 @@ return {
 
     -- also set it after loading ftplugins, since a lot overwrite [[ and ]]
     vim.api.nvim_create_autocmd('FileType', {
+      group = vim.api.nvim_create_augroup('illuminate_keymaps', { clear = true }),
       callback = function()
         local buffer = vim.api.nvim_get_current_buf()
         map(']]', 'next', buffer)
