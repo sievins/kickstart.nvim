@@ -30,7 +30,7 @@ return {
 
     keys = {
       {
-        '<leader>t',
+        '<leader>tt',
         function()
           local transparent = require 'transparent'
           vim.cmd 'TransparentToggle'
