@@ -59,10 +59,10 @@ return {
       type = 'group',
       val = {
         button('s', '', 'Restore Session', '<cmd>lua require("persistence").load()<CR>'),
-        button('f', '', 'Find File', '<cmd>Telescope find_files<CR>'),
-        button('r', '', 'Recent Files', '<cmd>Telescope oldfiles<CR>'),
+        button('f', '', 'Find File', '<cmd>lua Snacks.picker.files()<CR>'),
+        button('r', '', 'Recent Files', '<cmd>lua Snacks.picker.recent()<CR>'),
         button('n', '', 'New File', '<cmd>ene | startinsert<CR>'),
-        button('g', '', 'Find Text', '<cmd>Telescope live_grep<CR>'),
+        button('g', '', 'Find Text', '<cmd>lua Snacks.picker.grep()<CR>'),
         button('l', '󰒲', 'Lazy', '<cmd>Lazy<CR>'),
         button('q', '', 'Quit', '<cmd>qa<CR>'),
       },
