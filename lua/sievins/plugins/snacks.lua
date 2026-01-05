@@ -8,18 +8,30 @@ return {
   ---@type snacks.Config
   opts = {
     ---@class snacks.picker.Config
-    picker = {},
+    picker = {
+      win = {
+        input = {
+          keys = {
+            ['<Esc>'] = { 'close', mode = { 'n', 'i' } },
+            ['<C-]>'] = { 'history_forward', mode = { 'i', 'n' } },
+            ['<C-[>'] = { 'history_back', mode = { 'i', 'n' } },
+            ['<C-Up>'] = { 'preview_scroll_up', mode = { 'i', 'n' } },
+            ['<C-Down>'] = { 'preview_scroll_down', mode = { 'i', 'n' } },
+            ['<C-u>'] = { 'preview_scroll_up', mode = { 'i', 'n' } },
+            ['<C-d>'] = { 'preview_scroll_down', mode = { 'i', 'n' } },
+          },
+        },
+      },
+    },
     ---@class snacks.zen.Config
     zen = {
       toggles = {
         dim = false,
         git_signs = false,
         mini_diff_signs = false,
-        -- diagnostics = false,
-        -- inlay_hints = false,
       },
       show = {
-        statusline = true, -- can only be shown when using the global statusline
+        statusline = true,
       },
     },
   },
@@ -353,13 +365,6 @@ return {
         Snacks.picker.resume()
       end,
       desc = 'Resume',
-    },
-    {
-      '<leader>su',
-      function()
-        Snacks.picker.undo()
-      end,
-      desc = 'Undo History',
     },
     {
       '<leader>uC',
