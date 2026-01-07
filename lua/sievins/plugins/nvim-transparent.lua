@@ -25,6 +25,9 @@ return {
         transparent.clear_prefix 'NeoTree'
         transparent.clear_prefix 'lualine'
         transparent.clear_prefix 'Alpha'
+        transparent.clear_prefix 'Fidget'
+        transparent.clear_prefix 'Noice'
+        transparent.clear_prefix 'Notify'
       end
     end,
 
@@ -40,6 +43,9 @@ return {
             transparent.clear_prefix 'NeoTree'
             transparent.clear_prefix 'lualine'
             transparent.clear_prefix 'Alpha'
+            transparent.clear_prefix 'Fidget'
+            transparent.clear_prefix 'Noice'
+            transparent.clear_prefix 'Notify'
           else
             -- Going opaque - restore NeoTree highlights
             vim.api.nvim_set_hl(0, 'NeoTreeNormal', { link = 'Normal' })
