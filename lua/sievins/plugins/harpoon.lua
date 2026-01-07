@@ -60,7 +60,7 @@ return {
       local current = vim.fn.expand '%:.'
       for i, item in ipairs(list.items) do
         if item.value == current then
-          list:remove_at(i)
+          table.remove(list.items, i)
           vim.api.nvim_exec_autocmds('User', { pattern = 'HarpoonSwitchedList', modeline = false })
           break
         end

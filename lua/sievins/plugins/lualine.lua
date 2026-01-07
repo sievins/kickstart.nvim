@@ -136,16 +136,18 @@ return {
       ---@param data HarpoonlineData
       ---@return string HarpoonLine *file1 file2 ...
       custom_formatter = function(data)
-        local index = 0
-        return #data.items == 0 and ''
-          or table.concat(
-            vim.tbl_map(function(item)
-              index = index + 1
-              local filename = string.find(item.value, '/') == nil and item.value or item.value:match('.*' .. '/' .. '(.*)')
-              return data.active_idx == index and '*' .. filename or filename
-            end, data.items),
-            ' '
-          )
+        if #data.items == 0 then
+          return ''
+        end
+        local result = {}
+        for i, item in ipairs(data.items) do
+          if item and item.value then
+            local filename = string.find(item.value, '/') == nil and item.value or item.value:match('.*' .. '/' .. '(.*)') or item.value
+            local display = data.active_idx == i and '*' .. filename or filename
+            table.insert(result, display)
+          end
+        end
+        return table.concat(result, ' ')
       end,
 
       on_update = function()
