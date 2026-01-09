@@ -234,6 +234,8 @@ require('lazy').setup({
             end
           end
 
+          local client = vim.lsp.get_client_by_id(event.data.client_id)
+
           -- The following code creates a keymap to toggle inlay hints in your
           -- code, if the language server you are using supports them
           --
@@ -289,6 +291,7 @@ require('lazy').setup({
             },
           },
         },
+
         vtsls = {
           settings = {
             typescript = {
@@ -298,6 +301,17 @@ require('lazy').setup({
               format = { enable = false },
             },
           },
+        },
+
+        eslint = {
+          settings = {
+            workingDirectory = { mode = 'auto' }, -- helps monorepos / nested packages
+          },
+          on_attach = function(client)
+            -- don’t let eslint-lsp fight your formatter (prettier/conform)
+            client.server_capabilities.documentFormattingProvider = false
+            client.server_capabilities.documentRangeFormattingProvider = false
+          end,
         },
       }
 
@@ -316,7 +330,17 @@ require('lazy').setup({
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
-        'stylua', -- Used to format Lua code
+        'bash-language-server',
+        'eslint-lsp',
+        'json-lsp',
+        'lua-language-server',
+        'prettier',
+        'prettierd',
+        'prisma-language-server',
+        'tailwindcss-language-server',
+        'vtsls',
+        'yaml-language-server',
+        'stylua',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
