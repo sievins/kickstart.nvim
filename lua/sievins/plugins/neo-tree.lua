@@ -1,6 +1,60 @@
 -- Neo-tree is a plugin to browse the file system
 -- https://github.com/nvim-neo-tree/neo-tree.nvim
 
+--- Find neo-tree window if open
+---@return integer|nil window id or nil if not found
+local function find_neo_tree_window()
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    local buf = vim.api.nvim_win_get_buf(win)
+    local ft = vim.bo[buf].filetype
+    local source = vim.b[buf].neo_tree_source
+    -- Check filetype or buffer variable set by neo-tree
+    if ft == 'neo-tree' or source then
+      return win
+    end
+  end
+  return nil
+end
+
+--- Execute neo-tree command, using float position when zen mode is active
+---@param opts table
+local function neo_tree_execute(opts)
+  local in_zen = not not (Snacks and Snacks.zen and Snacks.zen.win and Snacks.zen.win:valid())
+  local desired_position = in_zen and 'float' or 'right'
+
+  local neo_tree_win = find_neo_tree_window()
+
+  if neo_tree_win then
+    local win_config = vim.api.nvim_win_get_config(neo_tree_win)
+    local currently_float = win_config.relative ~= ''
+
+    if currently_float ~= in_zen then
+      -- Position mismatch - close and reopen with correct position
+      require('neo-tree.command').execute { action = 'close' }
+      vim.schedule(function()
+        opts.position = desired_position
+        opts.toggle = nil
+        if in_zen then
+          opts.reveal_file = vim.fn.expand '%:p'
+          opts.reveal_force_cwd = true
+        end
+        require('neo-tree.command').execute(opts)
+      end)
+    else
+      -- Position matches - just close the window directly
+      pcall(vim.api.nvim_win_close, neo_tree_win, true)
+    end
+  else
+    -- Neo-tree is closed, open with correct position
+    opts.position = desired_position
+    if in_zen then
+      opts.reveal_file = vim.fn.expand '%:p'
+      opts.reveal_force_cwd = true
+    end
+    require('neo-tree.command').execute(opts)
+  end
+end
+
 return {
   {
     'nvim-neo-tree/neo-tree.nvim',
@@ -19,21 +73,21 @@ return {
       {
         '<leader>fe',
         function()
-          require('neo-tree.command').execute { toggle = true, dir = sievins.root() }
+          neo_tree_execute { toggle = true, dir = sievins.root() }
         end,
         desc = 'Explorer (Root Dir)',
       },
       {
         '<leader>fE',
         function()
-          require('neo-tree.command').execute { toggle = true, dir = vim.uv.cwd() }
+          neo_tree_execute { toggle = true, dir = vim.uv.cwd() }
         end,
         desc = 'Explorer (cwd)',
       },
       {
         '<leader>fr',
         function()
-          require('neo-tree.command').execute { toggle = true, reveal = true }
+          neo_tree_execute { toggle = true, reveal = true }
         end,
         desc = 'Explorer (reveal)',
       },
@@ -41,14 +95,14 @@ return {
       {
         '<leader>ge',
         function()
-          require('neo-tree.command').execute { source = 'git_status', toggle = true }
+          neo_tree_execute { source = 'git_status', toggle = true }
         end,
         desc = 'Git Explorer',
       },
       {
         '<leader>be',
         function()
-          require('neo-tree.command').execute { source = 'buffers', toggle = true }
+          neo_tree_execute { source = 'buffers', toggle = true }
         end,
         desc = 'Buffer Explorer',
       },
@@ -84,9 +138,24 @@ return {
         use_libuv_file_watcher = true,
         -- Sync directory scan to prevent cursor flicker on open
         -- async_directory_scan = 'never',
+        -- Hide file_size and last_modified columns
+        components = {
+          file_size = function()
+            return {}
+          end,
+          last_modified = function()
+            return {}
+          end,
+        },
       },
       window = {
         position = 'right',
+        popup = {
+          size = {
+            width = 50,
+            height = '80%',
+          },
+        },
         mappings = {
           ['<space>'] = 'none',
           ---@param state neotree.sources.filesystem.State
