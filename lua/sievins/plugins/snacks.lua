@@ -19,6 +19,9 @@ return {
             ['<C-Down>'] = { 'preview_scroll_down', mode = { 'i', 'n' } },
             ['<C-u>'] = { 'preview_scroll_up', mode = { 'i', 'n' } },
             ['<C-d>'] = { 'preview_scroll_down', mode = { 'i', 'n' } },
+            ['<C-|>'] = { 'edit_vsplit', mode = { 'i', 'n' } }, -- For glove80
+            ['<C-\\>'] = { 'edit_vsplit', mode = { 'i', 'n' } }, -- For querty
+            ['<C-->'] = { 'edit_split', mode = { 'i', 'n' } },
           },
         },
       },
