@@ -113,9 +113,11 @@ vim.keymap.set({ 'n', 'x' }, 'x', '"_x', { desc = 'Delete char (black hole)' })
 vim.keymap.set({ 'n', 'x' }, 'X', '"_X', { desc = 'Delete char back (black hole)' })
 vim.keymap.set({ 'n', 'x' }, 'c', '"_c', { desc = 'Change (black hole)' })
 
--- Clear highlights on search when pressing <Esc> in normal mode
---  See `:help hlsearch`
-vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+-- Clear highlights and dismiss popups when pressing <Esc> in normal mode
+vim.keymap.set('n', '<Esc>', function()
+  vim.cmd 'nohlsearch'
+  require('noice').cmd 'dismiss'
+end)
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which

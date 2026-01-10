@@ -112,6 +112,15 @@ return {
 
     config = function(_, opts)
       require('mini.indentscope').setup(opts)
+
+      -- Disable in floating windows (e.g. hover popups)
+      vim.api.nvim_create_autocmd('BufEnter', {
+        callback = function()
+          if vim.api.nvim_win_get_config(0).relative ~= '' then
+            vim.b.miniindentscope_disable = true
+          end
+        end,
+      })
     end,
   },
 }
