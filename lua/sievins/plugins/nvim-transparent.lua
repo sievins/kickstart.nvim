@@ -14,6 +14,11 @@ return {
         'AlphaFooter',
         'AlphaShortcut',
       },
+      exclude_groups = {
+        'BlinkCmpScrollBarThumb',
+        'BlinkCmpScrollBarGutter',
+        'BlinkCmpMenuSelection',
+      },
     },
 
     config = function(_, opts)
@@ -28,6 +33,7 @@ return {
         transparent.clear_prefix 'Fidget'
         transparent.clear_prefix 'Noice'
         transparent.clear_prefix 'Notify'
+        transparent.clear_prefix 'BlinkCmp'
       end
     end,
 
@@ -46,6 +52,7 @@ return {
             transparent.clear_prefix 'Fidget'
             transparent.clear_prefix 'Noice'
             transparent.clear_prefix 'Notify'
+            transparent.clear_prefix 'BlinkCmp'
           else
             -- Going opaque - restore NeoTree highlights
             vim.api.nvim_set_hl(0, 'NeoTreeNormal', { link = 'Normal' })

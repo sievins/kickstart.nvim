@@ -24,111 +24,6 @@ rtp:prepend(lazypath)
 
 -- [[ Configure and install plugins ]]
 require('lazy').setup({
-  -- NOTE: Plugins can specify dependencies.
-  --
-  -- The dependencies are proper plugin specifications as well - anything
-  -- you do for a plugin at the top level, you can do for a dependency.
-  --
-  -- Use the `dependencies` key to specify the dependencies of a particular plugin
-
-  -- { -- Fuzzy Finder (files, lsp, etc)
-  --   'nvim-telescope/telescope.nvim',
-  --   event = 'VimEnter',
-  --   dependencies = {
-  --     'nvim-lua/plenary.nvim',
-  --     { -- If encountering errors, see telescope-fzf-native README for installation instructions
-  --       'nvim-telescope/telescope-fzf-native.nvim',
-  --
-  --       -- `build` is used to run some command when the plugin is installed/updated.
-  --       -- This is only run then, not every time Neovim starts up.
-  --       build = 'make',
-  --
-  --       -- `cond` is a condition used to determine whether this plugin should be
-  --       -- installed and loaded.
-  --       cond = function()
-  --         return vim.fn.executable 'make' == 1
-  --       end,
-  --     },
-  --     { 'nvim-telescope/telescope-ui-select.nvim' },
-  --
-  --     -- Useful for getting pretty icons, but requires a Nerd Font.
-  --     { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
-  --   },
-  --   config = function()
-  --     -- Telescope is a fuzzy finder that comes with a lot of different things that
-  --     -- it can fuzzy find! It's more than just a "file finder", it can search
-  --     -- many different aspects of Neovim, your workspace, LSP, and more!
-  --     --
-  --     -- The easiest way to use Telescope, is to start by doing something like:
-  --     --  :Telescope help_tags
-  --     --
-  --     -- After running this command, a window will open up and you're able to
-  --     -- type in the prompt window. You'll see a list of `help_tags` options and
-  --     -- a corresponding preview of the help.
-  --     --
-  --     -- Two important keymaps to use while in Telescope are:
-  --     --  - Insert mode: <c-/>
-  --     --  - Normal mode: ?
-  --     --
-  --     -- This opens a window that shows you all of the keymaps for the current
-  --     -- Telescope picker. This is really useful to discover what Telescope can
-  --     -- do as well as how to actually do it!
-  --
-  --     -- [[ Configure Telescope ]]
-  --     -- See `:help telescope` and `:help telescope.setup()`
-  --     require('telescope').setup {
-  --       -- You can put your default mappings / updates / etc. in here
-  --       --  All the info you're looking for is in `:help telescope.setup()`
-  --       --
-  --       -- defaults = {
-  --       --   mappings = {
-  --       --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-  --       --   },
-  --       -- },
-  --       -- pickers = {}
-  --       extensions = {
-  --         ['ui-select'] = {
-  --           require('telescope.themes').get_dropdown(),
-  --         },
-  --       },
-  --     }
-  --
-  --     -- Enable Telescope extensions if they are installed
-  --     pcall(require('telescope').load_extension, 'fzf')
-  --     pcall(require('telescope').load_extension, 'ui-select')
-  --
-  --     -- See `:help telescope.builtin`
-  --     local builtin = require 'telescope.builtin'
-  --     vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
-  --     vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-  --     vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
-  --     vim.keymap.set('n', '<leader><space>', builtin.find_files, { desc = '[S]earch [F]iles' })
-  --     vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
-  --     vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
-  --     vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
-  --     vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
-  --     vim.keymap.set('n', '<leader>,', builtin.buffers, { desc = '[ ] Find existing buffers' })
-  --
-  --     -- Slightly advanced example of overriding default behavior and theme
-  --     vim.keymap.set('n', '<leader>/', function()
-  --       -- You can pass additional configuration to Telescope to change the theme, layout, etc.
-  --       builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-  --         winblend = 10,
-  --         previewer = false,
-  --       })
-  --     end, { desc = '[/] Fuzzily search in current buffer' })
-  --
-  --     -- It's also possible to pass additional configuration options.
-  --     --  See `:help telescope.builtin.live_grep()` for information about particular keys
-  --     vim.keymap.set('n', '<leader>s/', function()
-  --       builtin.live_grep {
-  --         grep_open_files = true,
-  --         prompt_title = 'Live Grep in Open Files',
-  --       }
-  --     end, { desc = '[S]earch [/] in Open Files' })
-  --   end,
-  -- },
-
   -- LSP Plugins
   {
     -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
@@ -275,7 +170,12 @@ require('lazy').setup({
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         -- ts_ls = {},
-        --
+
+        bashls = {},
+        jsonls = {},
+        prismals = {},
+        tailwindcss = {},
+        yamlls = {},
 
         lua_ls = {
           -- cmd = { ... },
@@ -344,20 +244,21 @@ require('lazy').setup({
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
+      -- mason-lspconfig is optional now; keep it if you like :LspInstall / auto-enable behavior.
       require('mason-lspconfig').setup {
-        ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
-        automatic_installation = false,
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for ts_ls)
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
-          end,
-        },
+        ensure_installed = {}, -- you're using mason-tool-installer instead
+        automatic_enable = false, -- we’ll enable explicitly below (optional)
       }
+
+      -- Apply blink capabilities + your per-server settings via the new API
+      for name, cfg in pairs(servers) do
+        cfg = cfg or {}
+        cfg.capabilities = vim.tbl_deep_extend('force', {}, capabilities, cfg.capabilities or {})
+        vim.lsp.config(name, cfg)
+      end
+
+      -- Enable them (auto-attach based on filetype/root markers)
+      vim.lsp.enable(vim.tbl_keys(servers))
     end,
   },
 
@@ -399,105 +300,6 @@ require('lazy').setup({
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
         javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },
       },
-    },
-  },
-
-  { -- Autocompletion
-    'saghen/blink.cmp',
-    event = 'VimEnter',
-    version = '1.*',
-    dependencies = {
-      -- Snippet Engine
-      {
-        'L3MON4D3/LuaSnip',
-        version = '2.*',
-        build = (function()
-          -- Build Step is needed for regex support in snippets.
-          -- This step is not supported in many windows environments.
-          -- Remove the below condition to re-enable on windows.
-          if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
-            return
-          end
-          return 'make install_jsregexp'
-        end)(),
-        dependencies = {
-          -- `friendly-snippets` contains a variety of premade snippets.
-          --    See the README about individual language/framework/plugin snippets:
-          --    https://github.com/rafamadriz/friendly-snippets
-          -- {
-          --   'rafamadriz/friendly-snippets',
-          --   config = function()
-          --     require('luasnip.loaders.from_vscode').lazy_load()
-          --   end,
-          -- },
-        },
-        opts = {},
-      },
-      'folke/lazydev.nvim',
-    },
-    --- @module 'blink.cmp'
-    --- @type blink.cmp.Config
-    opts = {
-      keymap = {
-        -- 'default' (recommended) for mappings similar to built-in completions
-        --   <c-y> to accept ([y]es) the completion.
-        --    This will auto-import if your LSP supports it.
-        --    This will expand snippets if the LSP sent a snippet.
-        -- 'super-tab' for tab to accept
-        -- 'enter' for enter to accept
-        -- 'none' for no mappings
-        --
-        -- For an understanding of why the 'default' preset is recommended,
-        -- you will need to read `:help ins-completion`
-        --
-        -- No, but seriously. Please read `:help ins-completion`, it is really good!
-        --
-        -- All presets have the following mappings:
-        -- <tab>/<s-tab>: move to right/left of your snippet expansion
-        -- <c-space>: Open menu or open docs if already open
-        -- <c-n>/<c-p> or <up>/<down>: Select next/previous item
-        -- <c-e>: Hide menu
-        -- <c-k>: Toggle signature help
-        --
-        -- See :h blink-cmp-config-keymap for defining your own keymap
-        preset = 'super-tab',
-
-        -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
-        --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
-      },
-
-      appearance = {
-        -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
-        -- Adjusts spacing to ensure icons are aligned
-        nerd_font_variant = 'mono',
-      },
-
-      completion = {
-        -- By default, you may press `<c-space>` to show the documentation.
-        -- Optionally, set `auto_show = true` to show the documentation after a delay.
-        documentation = { auto_show = false, auto_show_delay_ms = 500 },
-      },
-
-      sources = {
-        default = { 'lsp', 'path', 'snippets', 'lazydev' },
-        providers = {
-          lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
-        },
-      },
-
-      snippets = { preset = 'luasnip' },
-
-      -- Blink.cmp includes an optional, recommended rust fuzzy matcher,
-      -- which automatically downloads a prebuilt binary when enabled.
-      --
-      -- By default, we use the Lua implementation instead, but you may enable
-      -- the rust implementation via `'prefer_rust_with_warning'`
-      --
-      -- See :h blink-cmp-config-fuzzy for more information
-      fuzzy = { implementation = 'lua' },
-
-      -- Shows a signature help window while you type arguments for a function
-      signature = { enabled = true },
     },
   },
 

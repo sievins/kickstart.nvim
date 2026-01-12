@@ -113,6 +113,10 @@ vim.keymap.set({ 'n', 'x' }, 'x', '"_x', { desc = 'Delete char (black hole)' })
 vim.keymap.set({ 'n', 'x' }, 'X', '"_X', { desc = 'Delete char back (black hole)' })
 vim.keymap.set({ 'n', 'x' }, 'c', '"_c', { desc = 'Change (black hole)' })
 
+-- Preserve indent on empty lines by anchoring it with a temporary character
+vim.keymap.set('n', 'o', 'o <BS>', { desc = 'Open line below (preserve indent)' })
+vim.keymap.set('n', 'O', 'O <BS>', { desc = 'Open line above (preserve indent)' })
+
 -- Clear highlights and dismiss popups when pressing <Esc> in normal mode
 vim.keymap.set('n', '<Esc>', function()
   vim.cmd 'nohlsearch'
