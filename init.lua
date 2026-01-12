@@ -307,6 +307,7 @@ require('lazy').setup({
     'folke/tokyonight.nvim',
     priority = 1000,
     config = function()
+      -- local transparent = vim.g.transparent_enabled -- setting it to true breaks nvim-highlight-colors
       local transparent = false -- set to true if you would like to enable transparency
 
       local bg = '#011628'
