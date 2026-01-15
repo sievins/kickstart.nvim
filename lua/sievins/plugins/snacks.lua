@@ -7,7 +7,6 @@ return {
 
   ---@type snacks.Config
   opts = {
-    ---@class snacks.picker.Config
     picker = {
       win = {
         input = {
@@ -26,7 +25,6 @@ return {
         },
       },
     },
-    ---@class snacks.zen.Config
     zen = {
       toggles = {
         dim = false,
@@ -37,6 +35,7 @@ return {
         statusline = true,
       },
     },
+    scratch = {},
   },
 
   keys = {
@@ -449,6 +448,22 @@ return {
         Snacks.zen()
       end,
       desc = 'Toggle Zen Mode',
+    },
+
+    -- Scratch
+    {
+      '<leader>.',
+      function()
+        Snacks.scratch()
+      end,
+      desc = 'Toggle Scratch Buffer',
+    },
+    {
+      '<leader>S',
+      function()
+        Snacks.scratch.select()
+      end,
+      desc = 'Select Scratch Buffer',
     },
   },
 }

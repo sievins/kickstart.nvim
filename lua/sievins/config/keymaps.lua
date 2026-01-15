@@ -211,13 +211,15 @@ local function apply_diag_config()
 end
 
 -- Toggle virtual lines (underneath). If enabling, disable inline text.
-vim.keymap.set('n', '<leader>tl', function()
+local function toggleVirtualLines()
   diag_virtual_lines = not diag_virtual_lines
   if diag_virtual_lines then
     diag_virtual_text = false
   end
   apply_diag_config()
-end, { desc = 'Toggle diagnostic virtual lines' })
+end
+vim.keymap.set('n', '<leader>tl', toggleVirtualLines, { desc = 'Toggle diagnostic virtual lines' })
+vim.keymap.set('n', '<leader>te', toggleVirtualLines, { desc = 'Toggle diagnostic virtual lines' })
 
 -- Toggle inline virtual text. If enabling, disable virtual lines.
 vim.keymap.set('n', '<leader>ti', function()
