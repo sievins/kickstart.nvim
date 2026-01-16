@@ -13,6 +13,8 @@ return {
         'AlphaButtons',
         'AlphaFooter',
         'AlphaShortcut',
+        'TreesitterContext',
+        'TreesitterContextSeparator',
       },
       exclude_groups = {
         'BlinkCmpScrollBarThumb',
@@ -54,10 +56,16 @@ return {
             transparent.clear_prefix 'Notify'
             transparent.clear_prefix 'BlinkCmp'
           else
-            -- Going opaque - restore NeoTree highlights
+            -- Going opaque - restore highlights
             vim.api.nvim_set_hl(0, 'NeoTreeNormal', { link = 'Normal' })
             vim.api.nvim_set_hl(0, 'NeoTreeNormalNC', { link = 'Normal' })
             vim.api.nvim_set_hl(0, 'NeoTreeEndOfBuffer', { link = 'Normal' })
+
+            -- Restore TreesitterContext highlights
+            vim.api.nvim_set_hl(0, 'TreesitterContext', { link = 'Normal' })
+            local normal_bg = vim.api.nvim_get_hl(0, { name = 'Normal' }).bg
+            local separator_fg = vim.api.nvim_get_hl(0, { name = 'FloatBorder' }).fg
+            vim.api.nvim_set_hl(0, 'TreesitterContextSeparator', { fg = separator_fg, bg = normal_bg })
           end
         end,
         desc = 'Toggle Transparency',
