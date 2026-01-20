@@ -194,6 +194,25 @@ end, { desc = 'Quickfix List' })
 vim.keymap.set('n', '[q', vim.cmd.cprev, { desc = 'Previous Quickfix' })
 vim.keymap.set('n', ']q', vim.cmd.cnext, { desc = 'Next Quickfix' })
 
+local function qf_add_here()
+  local buf = vim.api.nvim_get_current_buf()
+  local name = vim.api.nvim_buf_get_name(buf)
+  if name == '' then
+    vim.notify('Buffer has no file name', vim.log.levels.WARN)
+    return
+  end
+
+  local pos = vim.api.nvim_win_get_cursor(0) -- {lnum, col0}
+  local lnum, col0 = pos[1], pos[2]
+
+  local line = (vim.api.nvim_get_current_line() or ''):gsub('%s+$', '')
+  local entry = { filename = name, lnum = lnum, col = col0 + 1, text = line }
+
+  vim.fn.setqflist({ entry }, 'a') -- append
+end
+
+vim.keymap.set('n', '<leader>xa', qf_add_here, { desc = 'Quickfix Add' })
+
 -- Toggles
 vim.keymap.set('n', '<leader>ts', '<cmd>set spell!<cr>', { desc = 'Toggle Spelling' })
 vim.keymap.set('n', '<leader>tw', '<cmd>set wrap!<cr>', { desc = 'Toggle Wrap' })
