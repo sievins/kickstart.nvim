@@ -62,13 +62,6 @@ return {
       desc = 'Grep',
     },
     {
-      '<leader>:',
-      function()
-        Snacks.picker.command_history()
-      end,
-      desc = 'Command History',
-    },
-    {
       '<leader>n',
       function()
         Snacks.picker.notifications()
@@ -454,9 +447,18 @@ return {
     {
       '<leader>.',
       function()
+        Snacks.scratch {
+          ft = 'markdown',
+        }
+      end,
+      desc = 'Toggle Scratch Buffer (markdown)',
+    },
+    {
+      '<leader>:',
+      function()
         Snacks.scratch()
       end,
-      desc = 'Toggle Scratch Buffer',
+      desc = 'Toggle Scratch Buffer (use current filetype)',
     },
     {
       '<leader>S',
