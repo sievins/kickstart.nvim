@@ -3,7 +3,8 @@ return {
 
   event = { 'BufReadPost', 'BufWritePost', 'BufNewFile' },
 
-  opts = { mode = 'cursor', max_lines = 3, separator = '-' },
+  -- zindex is set to 50 to ensure the context window appears above other floating windows (like zen mode)
+  opts = { mode = 'cursor', max_lines = 3, separator = '-', zindex = 50 },
 
   keys = {
     {
