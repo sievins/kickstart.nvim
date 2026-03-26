@@ -213,6 +213,8 @@ require('lazy').setup({
             client.server_capabilities.documentRangeFormattingProvider = false
           end,
         },
+
+        oxlint = {},
       }
 
       -- Ensure the servers and tools above are installed
@@ -234,6 +236,7 @@ require('lazy').setup({
         'eslint-lsp',
         'json-lsp',
         'lua-language-server',
+        'oxlint',
         'prettier',
         'prettierd',
         'prisma-language-server',
