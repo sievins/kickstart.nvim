@@ -79,7 +79,43 @@ return {
 
   -- setting the keybinding for LazyGit with 'keys' is recommended in
   -- order to load the plugin when the command is run for the first time
+  -- keys = {
+  --   { '<leader>gg', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
+  -- },
   keys = {
-    { '<leader>gg', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
+    {
+      '<leader>gg',
+      function()
+        vim.cmd 'LazyGit'
+
+        -- Sync cwd if lazygit switched worktree
+
+        -- Grab the window lazygit.nvim just opened
+        local lg_win = vim.api.nvim_get_current_win()
+
+        -- One-shot: when THIS window closes, sync cwd
+        vim.api.nvim_create_autocmd('WinClosed', {
+          pattern = tostring(lg_win),
+          once = true,
+          callback = function()
+            vim.schedule(function()
+              local newdir_file = vim.fn.expand '~/.lazygit/newdir'
+              if vim.fn.filereadable(newdir_file) ~= 1 then
+                return
+              end
+
+              local new_dir = vim.fn.readfile(newdir_file)[1]
+              vim.fn.delete(newdir_file)
+
+              if new_dir and new_dir ~= '' and new_dir ~= vim.fn.getcwd() and vim.fn.isdirectory(new_dir) == 1 then
+                vim.cmd('cd ' .. vim.fn.fnameescape(new_dir))
+                vim.notify('Worktree: ' .. vim.fn.fnamemodify(new_dir, ':~'), vim.log.levels.INFO)
+              end
+            end)
+          end,
+        })
+      end,
+      desc = 'LazyGit',
+    },
   },
 }
