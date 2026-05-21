@@ -1,3 +1,13 @@
+---@param str string
+---@param max_len number
+---@return string
+local function truncate(str, max_len)
+  if #str <= max_len then
+    return str
+  end
+  return string.sub(str, 1, max_len - 1) .. '…'
+end
+
 return {
   'nvim-lualine/lualine.nvim',
 
@@ -69,7 +79,14 @@ return {
       },
       sections = {
         lualine_a = { 'mode' },
-        lualine_b = { 'branch' },
+        lualine_b = {
+          {
+            'branch',
+            fmt = function(str)
+              return truncate(str, 20)
+            end,
+          },
+        },
 
         lualine_c = {
           {
@@ -172,16 +189,6 @@ return {
     ---@return boolean
     local function isHarpoonActive()
       return Harpoonline.format() ~= ''
-    end
-
-    ---@param str string
-    ---@param max_len number
-    ---@return string
-    local function truncate(str, max_len)
-      if #str <= max_len then
-        return str
-      end
-      return string.sub(str, 1, max_len - 1) .. '…'
     end
 
     ---@param index number
