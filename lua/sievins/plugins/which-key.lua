@@ -21,6 +21,7 @@ return {
         { '<leader>g', group = 'git' },
         { '<leader>h', group = 'harpoon' },
         { '<leader>gh', group = 'hunks' },
+        { '<leader>gd', group = 'diff' },
         { '<leader>q', group = 'quit/session' },
         { '<leader>s', group = 'search' },
         { '<leader>u', group = 'ui' },
