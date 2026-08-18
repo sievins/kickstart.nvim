@@ -35,6 +35,15 @@ return {
         { 'gri', hidden = true },
         { 'gra', hidden = true },
         { 'grt', hidden = true },
+        -- Hide harpoon file selections 2-9 to reduce clutter (keymaps still work)
+        { '<leader>2', hidden = true },
+        { '<leader>3', hidden = true },
+        { '<leader>4', hidden = true },
+        { '<leader>5', hidden = true },
+        { '<leader>6', hidden = true },
+        { '<leader>7', hidden = true },
+        { '<leader>8', hidden = true },
+        { '<leader>9', hidden = true },
         { 'gs', group = 'surround' },
         { 'z', group = 'fold' },
         {
