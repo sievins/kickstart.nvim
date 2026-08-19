@@ -65,9 +65,6 @@ return {
         -- Delay (in ms) between event and start of drawing scope indicator
         delay = 0,
 
-        -- Disable animation
-        animation = require('mini.indentscope').gen_animation.none(),
-
         -- Whether to auto draw scope: return `true` to draw, `false` otherwise.
         -- Default draws only fully computed scope (see `options.n_lines`).
         predicate = function(scope)
@@ -113,6 +110,8 @@ return {
     },
 
     config = function(_, opts)
+      -- Disable animation
+      opts.draw.animation = require('mini.indentscope').gen_animation.none()
       require('mini.indentscope').setup(opts)
 
       -- Disable in floating windows (e.g. hover popups)
