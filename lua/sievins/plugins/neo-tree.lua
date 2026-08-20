@@ -85,13 +85,12 @@ return {
         desc = 'Explorer (cwd)',
       },
       {
-        '<leader>fr',
+        '<leader>e',
         function()
           neo_tree_execute { toggle = true, reveal = true }
         end,
         desc = 'Explorer (reveal)',
       },
-      { '<leader>e', '<leader>fr', desc = 'Explorer', remap = true },
       {
         '<leader>ge',
         function()
