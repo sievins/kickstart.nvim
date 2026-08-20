@@ -129,6 +129,11 @@ return {
         },
       }
 
+      -- Autopairs for brackets and quotes
+      require('mini.pairs').setup {
+        modes = { insert = true, command = true, terminal = false },
+      }
+
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,
