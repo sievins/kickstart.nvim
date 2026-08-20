@@ -43,7 +43,14 @@ return {
       bottom_search = true,
       command_palette = true,
       long_message_to_split = true,
-      inc_rename = true, -- styled input for inc-rename.nvim
+      -- Styled input for inc-rename.nvim; titled "Rename" rather than the default "IncRename"
+      inc_rename = {
+        cmdline = {
+          format = {
+            IncRename = { title = ' Rename ' },
+          },
+        },
+      },
     },
   },
 
