@@ -66,6 +66,4 @@ return {
       end,
     })
   end,
-  -- Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
-  -- Textobjects are configured in `lua/sievins/plugins/nvim-treesitter-textobjects.lua`
 }
