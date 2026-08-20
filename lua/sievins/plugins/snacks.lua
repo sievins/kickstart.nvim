@@ -7,6 +7,10 @@ return {
 
   ---@type snacks.Config
   opts = {
+    bigfile = { enabled = true }, -- disable treesitter/LSP niceties on huge files
+    quickfile = { enabled = true }, -- render file before plugins load on fast open
+    input = {}, -- styled vim.ui.input (LSP rename, prompts)
+    image = {}, -- inline images in markdown (kitty graphics protocol)
     picker = {
       win = {
         input = {
