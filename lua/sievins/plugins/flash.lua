@@ -22,7 +22,7 @@ return {
             ["<c-space>"] = "next",
             ["<BS>"] = "prev"
           }
-        }) 
+        })
       end, desc = "Treesitter Incremental Selection" },
   },
 }
