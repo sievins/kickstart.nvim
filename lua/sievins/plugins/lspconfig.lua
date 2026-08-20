@@ -94,10 +94,10 @@ return {
             end
           end
 
-          map('<leader>co', source_action 'source.organizeImports', 'Organize Imports')
-          map('<leader>cM', source_action 'source.addMissingImports.ts', 'Add Missing Imports')
-          map('<leader>cu', source_action 'source.removeUnusedImports', 'Remove Unused Imports')
-          map('<leader>cD', source_action 'source.fixAll.ts', 'Fix All Diagnostics')
+          map('<leader>cio', source_action 'source.organizeImports', '[O]rganize Imports')
+          map('<leader>cia', source_action 'source.addMissingImports.ts', '[A]dd Missing Imports')
+          map('<leader>cid', source_action 'source.removeUnusedImports', '[D]elete Unused Imports')
+          map('<leader>cx', source_action 'source.fixAll.ts', 'Fi[x] All Diagnostics')
         end
       end,
     })
