@@ -42,6 +42,59 @@ return {
     scratch = {},
   },
 
+  config = function(_, opts)
+    require('snacks').setup(opts)
+
+    -- Initial diagnostic display state: no inline text or lines
+    vim.diagnostic.config { virtual_text = false, virtual_lines = false }
+
+    Snacks.toggle.option('spell', { name = 'Spelling' }):map '<leader>ts'
+    Snacks.toggle.option('wrap', { name = 'Wrap' }):map '<leader>tw'
+    Snacks.toggle.inlay_hints():map '<leader>th'
+
+    -- Autoformat on save (conform.lua reads vim.g.disable_autoformat)
+    Snacks.toggle
+      .new({
+        id = 'autoformat',
+        name = 'Autoformat',
+        get = function()
+          return not vim.g.disable_autoformat
+        end,
+        set = function(state)
+          vim.g.disable_autoformat = not state
+        end,
+      })
+      :map '<leader>tf'
+
+    -- Diagnostic virtual lines and virtual text are mutually exclusive
+    Snacks.toggle
+      .new({
+        id = 'diag_lines',
+        name = 'Diagnostic virtual lines',
+        get = function()
+          return vim.diagnostic.config().virtual_lines ~= false
+        end,
+        set = function(state)
+          -- Change `current_line` to false to show for all lines
+          vim.diagnostic.config { virtual_lines = state and { current_line = true } or false, virtual_text = false }
+        end,
+      })
+      :map '<leader>tl'
+
+    Snacks.toggle
+      .new({
+        id = 'diag_text',
+        name = 'Diagnostic virtual text',
+        get = function()
+          return vim.diagnostic.config().virtual_text ~= false
+        end,
+        set = function(state)
+          vim.diagnostic.config { virtual_text = state, virtual_lines = false }
+        end,
+      })
+      :map '<leader>ti'
+  end,
+
   keys = {
     -- Top Pickers & Explorer
     {

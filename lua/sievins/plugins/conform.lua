@@ -14,14 +14,7 @@ return {
       mode = '',
       desc = '[F]ormat buffer',
     },
-    {
-      '<leader>tf',
-      function()
-        vim.g.disable_autoformat = not vim.g.disable_autoformat
-        vim.notify('Autoformatting ' .. (vim.g.disable_autoformat and 'disabled' or 'enabled'))
-      end,
-      desc = 'Toggle Auto [F]ormating',
-    },
+    -- <leader>tf (toggle autoformat) lives in snacks.lua (Snacks.toggle)
   },
   opts = {
     notify_on_error = false,

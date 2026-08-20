@@ -213,41 +213,4 @@ end
 
 vim.keymap.set('n', '<leader>xa', qf_add_here, { desc = 'Quickfix Add' })
 
--- Toggles
-vim.keymap.set('n', '<leader>ts', '<cmd>set spell!<cr>', { desc = 'Toggle Spelling' })
-vim.keymap.set('n', '<leader>tw', '<cmd>set wrap!<cr>', { desc = 'Toggle Wrap' })
-
--- Diagnostics UI toggles (mutually exclusive)
-local diag_virtual_lines = false
-local diag_virtual_text = false -- start with inline OFF
-
-local function apply_diag_config()
-  -- Change `current_line` to false to toggle for all lines
-  vim.diagnostic.config {
-    virtual_lines = diag_virtual_lines and { current_line = true } or false,
-    virtual_text = diag_virtual_text or false,
-  }
-end
-
--- Toggle virtual lines (underneath). If enabling, disable inline text.
-local function toggleVirtualLines()
-  diag_virtual_lines = not diag_virtual_lines
-  if diag_virtual_lines then
-    diag_virtual_text = false
-  end
-  apply_diag_config()
-end
-vim.keymap.set('n', '<leader>tl', toggleVirtualLines, { desc = 'Toggle diagnostic virtual lines' })
-vim.keymap.set('n', '<leader>te', toggleVirtualLines, { desc = 'Toggle diagnostic virtual lines' })
-
--- Toggle inline virtual text. If enabling, disable virtual lines.
-vim.keymap.set('n', '<leader>ti', function()
-  diag_virtual_text = not diag_virtual_text
-  if diag_virtual_text then
-    diag_virtual_lines = false
-  end
-  apply_diag_config()
-end, { desc = 'Toggle diagnostic virtual text' })
-
--- Apply initial preference once
-apply_diag_config()
+-- Toggles live in snacks.lua (Snacks.toggle)
