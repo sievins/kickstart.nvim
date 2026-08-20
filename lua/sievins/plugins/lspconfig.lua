@@ -25,6 +25,9 @@ return {
 
     -- Allows extra capabilities provided by blink.cmp
     'saghen/blink.cmp',
+
+    -- JSON/YAML schemas from the SchemaStore catalog
+    'b0o/schemastore.nvim',
   },
   config = function()
     -- Brief aside: **What is LSP?**
@@ -110,10 +113,26 @@ return {
       -- ts_ls = {},
 
       bashls = {},
-      jsonls = {},
       prismals = {},
       tailwindcss = {},
-      yamlls = {},
+
+      jsonls = {
+        settings = {
+          json = {
+            schemas = require('schemastore').json.schemas(),
+            validate = { enable = true },
+          },
+        },
+      },
+
+      yamlls = {
+        settings = {
+          yaml = {
+            schemaStore = { enable = false, url = '' }, -- required when using schemastore.nvim
+            schemas = require('schemastore').yaml.schemas(),
+          },
+        },
+      },
 
       lua_ls = {
         -- cmd = { ... },
