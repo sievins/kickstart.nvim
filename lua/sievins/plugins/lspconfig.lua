@@ -72,9 +72,12 @@ return {
           vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
         end
 
-        -- Rename the variable under your cursor.
+        -- Rename the variable under your cursor, live-previewing references (inc-rename.nvim).
         --  Most Language Servers support renaming across files, etc.
-        map('<leader>cr', vim.lsp.buf.rename, '[C]ode [R]ename')
+        --  The `map` helper does not pass `expr`, so use vim.keymap.set directly.
+        vim.keymap.set('n', '<leader>cr', function()
+          return ':IncRename ' .. vim.fn.expand '<cword>'
+        end, { buffer = event.buf, expr = true, desc = 'LSP: [C]ode [R]ename' })
 
         -- Execute a code action, usually your cursor needs to be on top of an error
         -- or a suggestion from your LSP for this to activate.
