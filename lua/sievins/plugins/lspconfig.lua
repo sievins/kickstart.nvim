@@ -81,6 +81,24 @@ return {
         map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction', { 'n', 'x' })
 
         -- Inlay hints are toggled with <leader>th (Snacks.toggle in snacks.lua)
+
+        -- vtsls exposes TypeScript source actions (organize imports etc.) as code actions
+        local client = vim.lsp.get_client_by_id(event.data.client_id)
+        if client and client.name == 'vtsls' then
+          -- vtsls sends this notification-style command after import actions; swallow it
+          vim.lsp.commands['_typescript.didOrganizeImports'] = function() end
+
+          local function source_action(kind)
+            return function()
+              vim.lsp.buf.code_action { apply = true, context = { only = { kind }, diagnostics = {} } }
+            end
+          end
+
+          map('<leader>co', source_action 'source.organizeImports', 'Organize Imports')
+          map('<leader>cM', source_action 'source.addMissingImports.ts', 'Add Missing Imports')
+          map('<leader>cu', source_action 'source.removeUnusedImports', 'Remove Unused Imports')
+          map('<leader>cD', source_action 'source.fixAll.ts', 'Fix All Diagnostics')
+        end
       end,
     })
 
