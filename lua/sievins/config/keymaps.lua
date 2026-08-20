@@ -106,9 +106,6 @@ local function paste_preserve()
   end
 end
 vim.keymap.set({ 'n', 'x' }, '<leader>p', paste_preserve, { desc = 'Paste (preserve copy)' })
-vim.keymap.set({ 'n', 'x' }, '<leader>d', '"_d', { desc = 'Delete (black hole)' })
-vim.keymap.set('n', '<leader>dd', '"_dd', { desc = 'Delete line (black hole)' })
-vim.keymap.set('n', '<leader>D', '"_D', { desc = 'Delete to EOL (black hole)' })
 vim.keymap.set({ 'n', 'x' }, 'x', '"_x', { desc = 'Delete char (black hole)' })
 vim.keymap.set({ 'n', 'x' }, 'X', '"_X', { desc = 'Delete char back (black hole)' })
 vim.keymap.set({ 'n', 'x' }, 'c', '"_c', { desc = 'Change (black hole)' })
