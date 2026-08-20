@@ -161,6 +161,27 @@ return {
       end,
       desc = 'Git Log File',
     },
+    {
+      '<leader>gB',
+      function()
+        Snacks.gitbrowse()
+      end,
+      desc = 'Git Browse (open)',
+      mode = { 'n', 'x' },
+    },
+    {
+      '<leader>gY',
+      function()
+        Snacks.gitbrowse {
+          open = function(url)
+            vim.fn.setreg('+', url)
+          end,
+          notify = false,
+        }
+      end,
+      desc = 'Git Browse (copy)',
+      mode = { 'n', 'x' },
+    },
     -- gh
     {
       '<leader>gi',
