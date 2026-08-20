@@ -17,7 +17,6 @@ return {
         { '<leader>c', group = 'code' },
         { '<leader>ci', group = 'imports' },
         { '<leader>d', group = 'debug' },
-        { '<leader>dp', group = 'profiler' },
         { '<leader>f', group = 'file/find' },
         { '<leader>g', group = 'git' },
         { '<leader>h', group = 'harpoon' },

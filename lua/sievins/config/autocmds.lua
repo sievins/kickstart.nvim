@@ -55,21 +55,14 @@ vim.api.nvim_create_autocmd('BufReadPost', {
 vim.api.nvim_create_autocmd('FileType', {
   group = augroup 'close_with_q',
   pattern = {
-    'PlenaryTestPopup',
     'checkhealth',
-    'dbout',
     'gitsigns-blame',
     'grug-far',
     'help',
     'lspinfo',
-    'neotest-output',
-    'neotest-output-panel',
-    'neotest-summary',
     'notify',
     'qf',
-    'spectre_panel',
     'startuptime',
-    'tsplayground',
   },
   callback = function(event)
     vim.bo[event.buf].buflisted = false
