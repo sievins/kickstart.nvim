@@ -212,6 +212,7 @@ return {
     vim.list_extend(ensure_installed, {
       'bash-language-server',
       'eslint-lsp',
+      'js-debug-adapter',
       'json-lsp',
       'lua-language-server',
       'oxlint',
