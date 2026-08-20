@@ -23,6 +23,7 @@ return {
         { '<leader>h', group = 'harpoon' },
         { '<leader>gh', group = 'hunks' },
         { '<leader>gd', group = 'diff' },
+        { '<leader>gx', group = 'conflict' },
         { '<leader>q', group = 'quit/session' },
         { '<leader>s', group = 'search' },
         { '<leader>u', group = 'ui' },
