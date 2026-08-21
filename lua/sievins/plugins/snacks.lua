@@ -118,20 +118,6 @@ return {
       end,
       desc = 'Grep',
     },
-    {
-      '<leader>n',
-      function()
-        Snacks.picker.notifications()
-      end,
-      desc = 'Notification History',
-    },
-    {
-      '<leader>0',
-      function()
-        Snacks.explorer()
-      end,
-      desc = 'File Explorer',
-    },
     -- find
     {
       '<leader>fb',
@@ -141,32 +127,11 @@ return {
       desc = 'Buffers',
     },
     {
-      '<leader>fc',
-      function()
-        Snacks.picker.files { cwd = vim.fn.stdpath 'config' }
-      end,
-      desc = 'Find Config File',
-    },
-    {
       '<leader>ff',
       function()
         Snacks.picker.files()
       end,
       desc = 'Find Files',
-    },
-    {
-      '<leader>fg',
-      function()
-        Snacks.picker.git_files()
-      end,
-      desc = 'Find Git Files',
-    },
-    {
-      '<leader>fp',
-      function()
-        Snacks.picker.projects()
-      end,
-      desc = 'Projects',
     },
     {
       '<leader>fr',
@@ -314,13 +279,6 @@ return {
       desc = 'Search History',
     },
     {
-      '<leader>sa',
-      function()
-        Snacks.picker.autocmds()
-      end,
-      desc = 'Autocmds',
-    },
-    {
       '<leader>sc',
       function()
         Snacks.picker.command_history()
@@ -398,20 +356,6 @@ return {
       desc = 'Marks',
     },
     {
-      '<leader>sM',
-      function()
-        Snacks.picker.man()
-      end,
-      desc = 'Man Pages',
-    },
-    {
-      '<leader>sp',
-      function()
-        Snacks.picker.lazy()
-      end,
-      desc = 'Search for Plugin Spec',
-    },
-    {
       '<leader>sq',
       function()
         Snacks.picker.qflist()
@@ -424,13 +368,6 @@ return {
         Snacks.picker.resume()
       end,
       desc = 'Resume',
-    },
-    {
-      '<leader>uC',
-      function()
-        Snacks.picker.colorschemes()
-      end,
-      desc = 'Colorschemes',
     },
     -- LSP
     {
@@ -474,28 +411,14 @@ return {
       function()
         Snacks.picker.lsp_incoming_calls()
       end,
-      desc = 'C[a]lls Incoming',
+      desc = 'Calls [I]ncoming',
     },
     {
       'gao',
       function()
         Snacks.picker.lsp_outgoing_calls()
       end,
-      desc = 'C[a]lls Outgoing',
-    },
-    {
-      '<leader>ss',
-      function()
-        Snacks.picker.lsp_symbols()
-      end,
-      desc = 'LSP Symbols',
-    },
-    {
-      '<leader>sS',
-      function()
-        Snacks.picker.lsp_workspace_symbols()
-      end,
-      desc = 'LSP Workspace Symbols',
+      desc = 'Calls [O]utgoing',
     },
 
     -- Zen

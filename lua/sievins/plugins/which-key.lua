@@ -13,7 +13,6 @@ return {
     spec = {
       {
         mode = { 'n', 'x' },
-        { '<leader><tab>', group = 'tabs' },
         { '<leader>c', group = 'code' },
         { '<leader>ci', group = 'imports' },
         { '<leader>d', group = 'debug' },
@@ -25,11 +24,11 @@ return {
         { '<leader>gx', group = 'conflict' },
         { '<leader>q', group = 'quit/session' },
         { '<leader>s', group = 'search' },
-        { '<leader>u', group = 'ui' },
         { '<leader>x', group = 'diagnostics/quickfix' },
         { '[', group = 'prev' },
         { ']', group = 'next' },
         { 'g', group = 'goto' },
+        { 'ga', group = 'calls' },
         -- Hide default Neovim 0.11+ LSP keymaps so gr doesn't appear as a group
         { 'grr', hidden = true },
         { 'grn', hidden = true },
@@ -107,13 +106,6 @@ return {
     },
   },
   keys = {
-    {
-      '<leader>?',
-      function()
-        require('which-key').show { global = false }
-      end,
-      desc = 'Buffer Keymaps (which-key)',
-    },
     {
       '<c-w><space>',
       function()
