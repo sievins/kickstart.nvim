@@ -3,7 +3,7 @@ return {
     'mbbill/undotree',
 
     keys = {
-      { '<leader>bu', '<cmd>UndotreeToggle<cr>', desc = 'Undotree' },
+      { '<leader>u', '<cmd>UndotreeToggle<cr>', desc = 'Undotree' },
     },
 
     init = function()
