@@ -20,24 +20,26 @@ return {
       recorder.setup {
         ---@diagnostic disable-next-line: missing-fields
         mapping = {
-          startStopRecording = '<Plug>(recorder-record)',
+          -- Must be the literal typed key: the plugin strips this key from the
+          -- end of the recorded register, so an indirect mapping (e.g. <Plug>)
+          -- corrupts recordings.
+          startStopRecording = 'q',
           playMacro = 'Q',
         },
         -- Disable all notifications. Showing in lualine instead.
         logLevel = vim.log.levels.DEBUG,
       }
 
-      -- Wrap recorder mappings to refresh lualine
-      local function withRefresh(plug)
-        return function()
-          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(plug, true, false, true), 'm', false)
+      -- Refresh lualine when recording starts/stops. Scheduled because
+      -- RecordingLeave fires before reg_recording() is cleared.
+      vim.api.nvim_create_autocmd({ 'RecordingEnter', 'RecordingLeave' }, {
+        group = vim.api.nvim_create_augroup('sievins-recorder-lualine', { clear = true }),
+        callback = function()
           vim.schedule(function()
             require('lualine').refresh()
           end)
-        end
-      end
-
-      vim.keymap.set('n', 'q', withRefresh '<Plug>(recorder-record)', { desc = ' Start Recording' })
+        end,
+      })
     end,
   },
 }
