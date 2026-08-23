@@ -120,13 +120,6 @@ return {
     },
     -- find
     {
-      '<leader>fb',
-      function()
-        Snacks.picker.buffers()
-      end,
-      desc = 'Buffers',
-    },
-    {
       '<leader>ff',
       function()
         Snacks.picker.files()
@@ -201,7 +194,7 @@ return {
           notify = false,
         }
       end,
-      desc = 'Git Browse (copy)',
+      desc = 'GiHi. t Browse (copy)',
       mode = { 'n', 'x' },
     },
     -- gh
