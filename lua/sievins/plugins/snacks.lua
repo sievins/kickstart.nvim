@@ -149,14 +149,14 @@ return {
       desc = 'Git Branches',
     },
     {
-      '<leader>gl',
+      '<leader>gll',
       function()
         Snacks.picker.git_log()
       end,
       desc = 'Git Log',
     },
     {
-      '<leader>gL',
+      '<leader>glL',
       function()
         Snacks.picker.git_log_line()
       end,
@@ -177,14 +177,14 @@ return {
       desc = 'Git Stash',
     },
     {
-      '<leader>gf',
+      '<leader>glf',
       function()
         Snacks.picker.git_log_file()
       end,
       desc = 'Git Log File',
     },
     {
-      '<leader>gB',
+      '<leader>goo',
       function()
         Snacks.gitbrowse()
       end,
@@ -192,7 +192,7 @@ return {
       mode = { 'n', 'x' },
     },
     {
-      '<leader>gY',
+      '<leader>goy',
       function()
         Snacks.gitbrowse {
           open = function(url)
@@ -206,28 +206,28 @@ return {
     },
     -- gh
     {
-      '<leader>gi',
+      '<leader>goi',
       function()
         Snacks.picker.gh_issue()
       end,
       desc = 'GitHub Issues (open)',
     },
     {
-      '<leader>gI',
+      '<leader>goI',
       function()
         Snacks.picker.gh_issue { state = 'all' }
       end,
       desc = 'GitHub Issues (all)',
     },
     {
-      '<leader>gp',
+      '<leader>gop',
       function()
         Snacks.picker.gh_pr()
       end,
       desc = 'GitHub Pull Requests (open)',
     },
     {
-      '<leader>gP',
+      '<leader>goP',
       function()
         Snacks.picker.gh_pr { state = 'all' }
       end,

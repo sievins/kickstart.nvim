@@ -23,12 +23,40 @@ return {
         vim.opt_local.foldenable = false
       end,
     },
+
+    -- Close the view with q from any Diffview buffer.
+    -- Note: q shadows macro recording inside diff buffers.
+    keymaps = {
+      view = {
+        { 'n', 'q', '<cmd>DiffviewClose<cr>', { desc = 'Close Diffview' } },
+      },
+      file_panel = {
+        { 'n', 'q', '<cmd>DiffviewClose<cr>', { desc = 'Close Diffview' } },
+      },
+      file_history_panel = {
+        { 'n', 'q', '<cmd>DiffviewClose<cr>', { desc = 'Close Diffview' } },
+      },
+    },
   },
 
   keys = {
-    { '<leader>gdo', '<cmd>DiffviewOpen<cr>', desc = 'Diffview Open' },
-    { '<leader>gdc', '<cmd>DiffviewClose<cr>', desc = 'Diffview Close' },
-    { '<leader>gdh', '<cmd>DiffviewFileHistory %<cr>', desc = 'File History (current file)' },
-    { '<leader>gdH', '<cmd>DiffviewFileHistory<cr>', desc = 'File History (tree)' },
+    {
+      '<leader>gdd',
+      function()
+        local lib = require 'diffview.lib'
+        if lib.get_current_view() then
+          vim.cmd 'DiffviewClose'
+        elseif #lib.views > 0 then
+          -- A view is open in another tabpage; jump there and close it
+          vim.api.nvim_set_current_tabpage(lib.views[1].tabpage)
+          vim.cmd 'DiffviewClose'
+        else
+          vim.cmd 'DiffviewOpen'
+        end
+      end,
+      desc = 'Diff repo',
+    },
+    { '<leader>glh', '<cmd>DiffviewFileHistory %<cr>', desc = 'File History (current file)' },
+    { '<leader>glH', '<cmd>DiffviewFileHistory<cr>', desc = 'File History (tree)' },
   },
 }
