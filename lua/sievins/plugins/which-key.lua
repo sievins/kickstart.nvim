@@ -10,6 +10,13 @@ return {
 
   opts = {
     preset = 'helix',
+    -- Keep <C-d>/<C-u> out of which-key's key tree so they scroll the popup
+    -- even at the root, where neoscroll's mappings would otherwise win.
+    -- Outside the popup neoscroll behaves as normal.
+    filter = function(mapping)
+      local lhs = vim.fn.keytrans(vim.keycode(mapping.lhs))
+      return lhs ~= '<C-D>' and lhs ~= '<C-U>'
+    end,
     spec = {
       {
         mode = { 'n', 'x' },
