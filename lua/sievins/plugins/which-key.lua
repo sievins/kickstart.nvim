@@ -33,6 +33,7 @@ return {
         { '<leader>gm', group = 'merge conflict' },
         { '<leader>q', group = 'quit/session' },
         { '<leader>s', group = 'search' },
+        { '<leader>t', group = 'toggle' },
         { '<leader>x', group = 'lists' },
         { '[', group = 'prev' },
         { ']', group = 'next' },
@@ -71,8 +72,6 @@ return {
           end,
         },
       },
-      { '<leader>s', group = '[S]earch' },
-      { '<leader>t', group = '[T]oggle' },
     },
 
     icons = {

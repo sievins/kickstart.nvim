@@ -77,11 +77,11 @@ return {
         --  The `map` helper does not pass `expr`, so use vim.keymap.set directly.
         vim.keymap.set('n', '<leader>cr', function()
           return ':IncRename ' .. vim.fn.expand '<cword>'
-        end, { buffer = event.buf, expr = true, desc = 'LSP: [C]ode [R]ename' })
+        end, { buffer = event.buf, expr = true, desc = 'LSP: Code Rename' })
 
         -- Execute a code action, usually your cursor needs to be on top of an error
         -- or a suggestion from your LSP for this to activate.
-        map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction', { 'n', 'x' })
+        map('<leader>ca', vim.lsp.buf.code_action, 'Code Action', { 'n', 'x' })
 
         -- Inlay hints are toggled with <leader>th (Snacks.toggle in snacks.lua)
 
@@ -97,10 +97,10 @@ return {
             end
           end
 
-          map('<leader>cio', source_action 'source.organizeImports', '[O]rganize Imports')
-          map('<leader>cia', source_action 'source.addMissingImports.ts', '[A]dd Missing Imports')
-          map('<leader>cid', source_action 'source.removeUnusedImports', '[D]elete Unused Imports')
-          map('<leader>cx', source_action 'source.fixAll.ts', 'Fi[x] All Diagnostics')
+          map('<leader>cio', source_action 'source.organizeImports', 'Organize Imports')
+          map('<leader>cia', source_action 'source.addMissingImports.ts', 'Add Missing Imports')
+          map('<leader>cid', source_action 'source.removeUnusedImports', 'Delete Unused Imports')
+          map('<leader>cx', source_action 'source.fixAll.ts', 'Fix All Diagnostics')
         end
       end,
     })

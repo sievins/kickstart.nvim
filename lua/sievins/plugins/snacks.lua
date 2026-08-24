@@ -194,7 +194,7 @@ return {
           notify = false,
         }
       end,
-      desc = 'GiHi. t Browse (copy)',
+      desc = 'Git Browse (copy)',
       mode = { 'n', 'x' },
     },
     -- gh
@@ -397,21 +397,21 @@ return {
       function()
         Snacks.picker.lsp_type_definitions()
       end,
-      desc = 'Goto T[y]pe Definition',
+      desc = 'Goto Type Definition',
     },
     {
       'gai',
       function()
         Snacks.picker.lsp_incoming_calls()
       end,
-      desc = 'Calls [I]ncoming',
+      desc = 'Calls Incoming',
     },
     {
       'gao',
       function()
         Snacks.picker.lsp_outgoing_calls()
       end,
-      desc = 'Calls [O]utgoing',
+      desc = 'Calls Outgoing',
     },
 
     -- Zen
