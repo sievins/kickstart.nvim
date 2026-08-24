@@ -2,6 +2,7 @@
 -- https://github.com/akinsho/git-conflict.nvim
 --
 -- Default mappings are off: `c` is remapped to black-hole change and `ct{char}` is a real motion.
+-- `m` = merge conflict. `]m`/`[m` shadow the built-in method motions; treesitter's `]f`/`[f` cover those.
 
 return {
   'akinsho/git-conflict.nvim',
@@ -9,12 +10,12 @@ return {
   event = 'BufReadPre',
   opts = { default_mappings = false, default_commands = true },
   keys = {
-    { ']x', '<cmd>GitConflictNextConflict<cr>', desc = 'Next Conflict' },
-    { '[x', '<cmd>GitConflictPrevConflict<cr>', desc = 'Prev Conflict' },
-    { '<leader>gxo', '<cmd>GitConflictChooseOurs<cr>', desc = 'Choose Ours' },
-    { '<leader>gxt', '<cmd>GitConflictChooseTheirs<cr>', desc = 'Choose Theirs' },
-    { '<leader>gxb', '<cmd>GitConflictChooseBoth<cr>', desc = 'Choose Both' },
-    { '<leader>gx0', '<cmd>GitConflictChooseNone<cr>', desc = 'Choose None' },
-    { '<leader>gxq', '<cmd>GitConflictListQf<cr>', desc = 'Conflicts to Quickfix' },
+    { ']m', '<cmd>GitConflictNextConflict<cr>', desc = 'Next Conflict' },
+    { '[m', '<cmd>GitConflictPrevConflict<cr>', desc = 'Prev Conflict' },
+    { '<leader>gmo', '<cmd>GitConflictChooseOurs<cr>', desc = 'Choose Ours' },
+    { '<leader>gmt', '<cmd>GitConflictChooseTheirs<cr>', desc = 'Choose Theirs' },
+    { '<leader>gmb', '<cmd>GitConflictChooseBoth<cr>', desc = 'Choose Both' },
+    { '<leader>gmn', '<cmd>GitConflictChooseNone<cr>', desc = 'Choose None' },
+    { '<leader>gmq', '<cmd>GitConflictListQf<cr>', desc = 'Conflicts to Quickfix' },
   },
 }

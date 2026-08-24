@@ -188,9 +188,6 @@ vim.keymap.set('n', '<leader>xq', function()
   end
 end, { desc = 'Quickfix List' })
 
-vim.keymap.set('n', '[q', vim.cmd.cprev, { desc = 'Previous Quickfix' })
-vim.keymap.set('n', ']q', vim.cmd.cnext, { desc = 'Next Quickfix' })
-
 local function qf_add_here()
   local buf = vim.api.nvim_get_current_buf()
   local name = vim.api.nvim_buf_get_name(buf)
