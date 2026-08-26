@@ -137,6 +137,12 @@ return {
       prismals = {},
       tailwindcss = {},
 
+      -- Grammar/prose checking (https://writewithharper.com)
+      harper_ls = {
+        -- Restricted to markdown; harper's default filetypes also lint comments in code
+        filetypes = { 'markdown' },
+      },
+
       jsonls = {
         settings = {
           json = {
@@ -212,6 +218,7 @@ return {
     vim.list_extend(ensure_installed, {
       'bash-language-server',
       'eslint-lsp',
+      'harper-ls',
       'js-debug-adapter',
       'json-lsp',
       'lua-language-server',
