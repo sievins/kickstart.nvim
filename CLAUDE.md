@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-This is a fork of [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim) - a minimal, single-file Neovim configuration designed as a starting point. It's intentionally simple and heavily commented for learning purposes.
+This started as a fork of [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim) but has been fully restructured into a modular config under the `sievins` namespace. Nothing from the original kickstart layout remains.
 
 ## Commands
 
@@ -22,39 +22,35 @@ stylua --check .
 
 Run inside Neovim:
 ```
-:checkhealth kickstart
+:checkhealth sievins
 ```
 
-This verifies Neovim version (requires 0.10+) and external dependencies.
+This verifies the Neovim version (requires 0.11+) and external dependencies. Implemented in `lua/sievins/health.lua`, discovered automatically via the `lua/<name>/health.lua` runtimepath convention.
 
 ## Architecture
 
-### Single-File Configuration
+`init.lua` is a small entry point (~46 lines): it loads the config modules, bootstraps lazy.nvim, and imports plugin specs.
 
-The entire configuration lives in `init.lua` (~945 lines), organized into sections:
-1. Global settings (leader keys, nerd font flag)
-2. Vim options (using `vim.o` API)
-3. Basic keymaps
-4. Autocommands
-5. Plugin manager bootstrap (lazy.nvim)
-6. Plugin specifications with inline configuration
+```
+init.lua                  Entry point
+lua/sievins/
+  config/                 options.lua, keymaps.lua, autocmds.lua
+  util/                   Utilities (provides the sievins.* global): bufdelete, bufhistory, root
+  plugins/                One file per plugin spec, imported by lazy.nvim via { import = 'sievins.plugins' }
+  health.lua              :checkhealth sievins
+```
 
-### Plugin Structure
-
-- **Core plugins**: Defined inline in `init.lua`
-- **Optional plugins**: Located in `lua/kickstart/plugins/` - uncomment imports in `init.lua` to enable
-- **Custom plugins**: Add to `lua/custom/plugins/init.lua` for personal additions
-
-Currently enabled optional plugin: `neo-tree.lua`
+To add a plugin, create a new file in `lua/sievins/plugins/` returning a lazy.nvim spec.
 
 ### Key Technologies
 
 - **lazy.nvim**: Plugin manager with lazy-loading
 - **Mason**: LSP/tool installer
 - **blink.cmp**: Completion engine
-- **Telescope**: Fuzzy finder
+- **snacks.nvim**: Picker (fuzzy finding, grep, git) and other utilities
 - **Treesitter**: Syntax highlighting
 - **Conform**: Code formatting
+- **neo-tree**: File explorer
 
 ## Code Style
 
@@ -68,6 +64,8 @@ Use `vim.o` for options (not `vim.opt`). LSP keybindings follow Neovim 0.11 conv
 
 ## External Dependencies
 
-Required: `git`, `make`, `unzip`, C compiler, `ripgrep`, `fd-find`
+Required: `git`, `rg`, `fd`, `lazygit`, `unzip`, `cargo` (blink.cmp build), `node` (Copilot, markdown-preview), C compiler (Treesitter parsers)
 
-Optional: Nerd Font (set `vim.g.have_nerd_font = true` if installed)
+Optional: `gh` (snacks issue/PR pickers), Nerd Font (set `vim.g.have_nerd_font = true` if installed)
+
+`:checkhealth sievins` checks for these.
