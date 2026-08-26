@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 200" width="720" height="200" role="img" aria-label="sievins/nvim">
+  <!-- terminal window -->
+  <rect x="1" y="1" width="718" height="198" rx="12" fill="#011628" stroke="#547998" stroke-width="1.5"/>
+
+  <!-- window dots, palette blues -->
+  <circle cx="30" cy="30" r="6" fill="#0A64AC"/>
+  <circle cx="52" cy="30" r="6" fill="#547998"/>
+  <circle cx="74" cy="30" r="6" fill="#143652"/>
+
+  <!-- wordmark -->
+  <text x="360" y="128" text-anchor="middle"
+        font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+        font-size="46" letter-spacing="1">
+    <tspan fill="#627E97">sievins/</tspan><tspan fill="#CBE0F0">nvim</tspan><tspan fill="#0A64AC">&#160;&#9608;<animate attributeName="fill-opacity" values="1;1;0;0" keyTimes="0;0.5;0.5;1" dur="1.2s" repeatCount="indefinite"/></tspan>
+  </text>
+</svg>
