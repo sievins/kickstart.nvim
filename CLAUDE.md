@@ -1,4 +1,3 @@
-- Runs under `NVIM_APPNAME=nvim-kickstart` (not `~/.config/nvim`). Headless testing: `NVIM_APPNAME=nvim-kickstart nvim --headless ...`
 - `queries/markdown/*.scm` replace the base treesitter queries to work around a Neovim 0.12 crash (neovim/neovim#39032). Read the file headers before touching; deleting them reintroduces the crash.
 - `sievins.*` is a lazy global (metatable in `lua/sievins/util/init.lua`); `sievins.root`, `sievins.bufdelete` etc. are never explicitly required.
 - Use `vim.o`, not `vim.opt` (unless the option needs list/append semantics).

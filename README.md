@@ -29,8 +29,8 @@
 ## r u n
 
 ```sh
-git clone git@github.com:sievins/kickstart.nvim.git ~/.config/nvim-kickstart
-NVIM_APPNAME=nvim-kickstart nvim
+git clone git@github.com:sievins/kickstart.nvim.git ~/.config/nvim
+nvim
 
 # :checkhealth sievins reports anything missing
 ```
