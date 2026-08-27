@@ -34,10 +34,3 @@ nvim
 
 # :checkhealth sievins reports anything missing
 ```
-
-## f i n e &nbsp; p r i n t
-
-<sub><code>queries/markdown/</code> overrides the runtime treesitter queries to
-dodge a Neovim 0.12 crash
-(<a href="https://github.com/neovim/neovim/issues/39032">neovim/neovim#39032</a>).
-Read the file headers before touching anything in there.</sub>
