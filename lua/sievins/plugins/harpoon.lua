@@ -1,7 +1,7 @@
 return {
   'ThePrimeagen/harpoon',
   branch = 'harpoon2',
-  dependencies = { 'nvim-lua/plenary.nvim', 'ibhagwan/fzf-lua' },
+  dependencies = { 'nvim-lua/plenary.nvim' },
   config = function()
     local harpoon = require 'harpoon'
 
@@ -9,27 +9,17 @@ return {
     harpoon:setup {}
     -- REQUIRED
 
-    local function toggle_fzf(harpoon_files)
-      local file_paths = {}
-      -- Extract file paths from the Harpoon list
+    local function toggle_picker(harpoon_files)
+      local items = {}
       for _, item in ipairs(harpoon_files.items) do
-        table.insert(file_paths, item.value)
+        table.insert(items, { text = item.value, file = item.value })
       end
 
-      require('fzf-lua').fzf_exec(file_paths, {
-        prompt = 'Harpoon> ',
-        actions = {
-          -- By default, press <CR> on a selection to open that file
-          ['default'] = function(selected)
-            if selected and #selected > 0 then
-              vim.cmd('edit ' .. selected[1])
-            end
-          end,
-        },
-        -- Optional: If you’d like to preview the file, you can set `previewer`
-        -- and/or `fn_transform` to build your own display or preview logic.
-        previewer = 'builtin',
-      })
+      Snacks.picker.pick {
+        title = 'Harpoon',
+        items = items,
+        format = 'file',
+      }
     end
 
     vim.keymap.set('n', '<leader>ha', function()
@@ -46,7 +36,7 @@ return {
     end, { desc = 'Toggle harpoon menu' })
 
     vim.keymap.set('n', '<leader>ht', function()
-      toggle_fzf(harpoon:list())
+      toggle_picker(harpoon:list())
     end, { desc = 'Toggle harpoon preview' })
 
     vim.keymap.set('n', '<leader>hc', function()

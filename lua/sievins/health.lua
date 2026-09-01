@@ -22,7 +22,6 @@ local check_external_reqs = function()
     { exe = 'lazygit', purpose = 'lazygit.nvim' },
     { exe = 'gh', purpose = 'snacks gh_issue/gh_pr pickers' },
     { exe = 'unzip', purpose = 'mason package installs' },
-    { exe = 'cargo', purpose = 'blink.cmp build step' },
     { exe = 'node', purpose = 'copilot, markdown-preview' },
   }
 

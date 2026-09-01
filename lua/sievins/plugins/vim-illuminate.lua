@@ -17,13 +17,9 @@ return {
 
     local function map(key, dir, buffer)
       vim.keymap.set('n', key, function()
-        -- Suppress notification when reaching top/bottom reference.
+        -- `silent!` suppresses the "hit BOTTOM/TOP of the references" message.
         -- The cursor not moving is enough context to know we've reached the top/bottom.
-        local err_writeln = vim.api.nvim_err_writeln
-        ---@diagnostic disable-next-line: duplicate-set-field
-        vim.api.nvim_err_writeln = function() end
-        require('illuminate')['goto_' .. dir .. '_reference'](false)
-        vim.api.nvim_err_writeln = err_writeln
+        vim.cmd(('silent! lua require("illuminate").goto_%s_reference(false)'):format(dir))
       end, { desc = dir:sub(1, 1):upper() .. dir:sub(2) .. ' Reference', buffer = buffer })
     end
 
